@@ -7,4 +7,9 @@ describe('GitHubSDK class exitence', () => {
         const api = new GitHubSDK();
         expect(api).toBeInstanceOf(GitHubSDK);
     });
+    it('returns Martin Gawlyta', () => {
+        const api = new GitHubSDK('Martin', 'Gawlyta');
+        api.sendInvitation();
+        expect(api).toBeInstanceOf(GitHubSDK);
+    });
 })

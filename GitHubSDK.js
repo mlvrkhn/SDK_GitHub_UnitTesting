@@ -9,7 +9,7 @@ export default class GitHubSDK {
         this.surname = surname;
     }
     sendInvitation() {
-        console.log('invo', name, surname);
+        console.log('invo', this.name, this.surname);
     }
 }
 
