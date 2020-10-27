@@ -1,0 +1,11 @@
+.porfolio__container {
+    min-width: 600px;
+    height: 400px;
+    border: 1px solid coral;
+    display: flex;
+    justify-content: center;
+}
+.portfolio__element {
+    border: 1px solid darkolivegreen;
+    width: 25vw;
+}
