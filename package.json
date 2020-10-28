@@ -5,7 +5,7 @@
   "main": "GitHubSDK.js",
   "scripts": {
     "test": "jest --watch",
-    "start": "webpack-dev-server --open",
+    "start": "webpack-dev-server --open --watch",
     "build": "webpack --mode production"
   },
   "repository": {
@@ -32,11 +32,11 @@
     "html-webpack-plugin": "^4.5.0",
     "jest": "^26.3.0",
     "jest-babel": "^1.0.1",
+    "node-fetch": "^2.6.1",
+    "source-map-loader": "^1.1.2",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
   },
-  "dependencies": {
-    "node-fetch": "^2.6.1"
-  }
+  "dependencies": {}
 }

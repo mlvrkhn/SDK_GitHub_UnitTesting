@@ -1,3 +1,6 @@
+body {
+    background-color: darkslategrey;
+}
 .porfolio__container {
     min-width: 600px;
     height: 400px;

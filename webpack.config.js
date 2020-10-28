@@ -1,5 +1,8 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+// const css = require('file.css');
+
+
 
 
 
@@ -7,13 +10,13 @@ module.exports = {
     entry: './GitHubSDK.js',
     output: {
         path: path.resolve(__dirname, 'build'),
-        filename: 'GHSDK.js'
+        filename: 'GitHubSDK-final.js'
     }, 
     module: {
         rules: [{
             test: /\.js$/,
             exclude: /node_modules/,
-            use: 'babel-loader'
+            use: ['babel-loader', 'source-map-loader']
         }]
     },
     plugins: [

@@ -1,24 +1,36 @@
 import GitHubSDK from './GitHubSDK';
-const fetch = require("node-fetch");
+// const fetch = require("node-fetch");
 import { expect } from '@jest/globals';
 
 
-describe('tests for GitHubSDK', () => {
+describe('tests for GitHubSDK class', () => {
     describe('GitHubSDK class exitence', () => {
 
         it('checks if the instance of a GitHubSDK class is created', () => {
-            const api = new GitHubSDK('Name', 'Lastname');
-            console.dir(api)
+            const api = new GitHubSDK('url','login', 'token');
             expect(api).toBeInstanceOf(GitHubSDK);
         });
 
-        it('gets user data and ', async () => {
-            const api = new GitHubSDK('Martin', 'Gawlyta');
-            const respond = await api.getUserData();
+        it('throws if parameters are not passed', async () => {
+            function createClassInstance() {
+                const api = new GitHubSDK();
+                console.log('hejka');
+            };
+            return createClassInstance();
+
             expect(respond).toBeInstanceOf(GitHubSDK);
+
         });
 
     })
+
+
+    // it('throws if parameters are not passed', async () => {
+    //         const api = new GitHubSDK('Martin', 'Gawlyta');
+    //         const respond = await api.getUserData();
+    //         expect(respond).toBeInstanceOf(GitHubSDK);
+    //     });
+    
     // describe('function getUserData()', () => {
     //     it('returns user data and converts into txt', () => {
 
