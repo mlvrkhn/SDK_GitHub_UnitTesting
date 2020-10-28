@@ -1,10 +1,12 @@
 const myToken = '82a95f5e8ca944aac848eecffda7d212bb5b2c5e'
 const fetch = require("node-fetch");
+const regeneratorRuntime = require("regenerator-runtime");
+
 const myUsername = 'mlvrkhn';
 const myURL = 'https://api.github.com/users';
 
-
-export default class GitHubSDK {
+console.log('Class loaded!!!');
+class GitHubSDK {
     constructor(url, token, username) {
         this.username = username;
         this.token = token;
@@ -30,12 +32,9 @@ export default class GitHubSDK {
     }
 };
 
-
-
 const x = new GitHubSDK(myURL, myToken, myUsername);
-x.displayData()
 x.getUserData();
 
-// export.modules = {
-//     GitHubSDK
-// }
+module.exports = {
+    GitHubSDK
+}
