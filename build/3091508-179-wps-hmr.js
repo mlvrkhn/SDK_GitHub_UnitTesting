@@ -1,1 +1,0 @@
-self.webpackHotUpdategithub_sdk_api(179,{985:function(e,t,n){"use strict";n(300),n(666),console.log("Class loaded!!!")}},(function(e){"use strict";e.d=function(t,n){for(var o in n)e.o(n,o)&&!e.o(t,o)&&Object.defineProperty(t,o,{enumerable:!0,get:n[o]})},e.h=function(){return"87e25ec0fed9add01989"}}));

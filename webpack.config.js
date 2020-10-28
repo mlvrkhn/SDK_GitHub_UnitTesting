@@ -1,7 +1,6 @@
-const path = require('path');
-console.log("Current directory:", __dirname);
-
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+
 
 
 module.exports = {
@@ -22,5 +21,6 @@ module.exports = {
             template: './index.html',
             filename: 'index.html'
         })
-    ]
+    ],
+    target: 'web'
 }
