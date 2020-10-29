@@ -7,7 +7,7 @@ const path = require('path');
 
 
 module.exports = {
-    entry: './GitHubSDK.js',
+    entry: './api.js',
     output: {
         path: path.resolve(__dirname, 'build'),
         filename: 'GitHubSDK-final.js'
@@ -25,5 +25,4 @@ module.exports = {
             filename: 'index.html'
         })
     ],
-    target: 'web'
 }

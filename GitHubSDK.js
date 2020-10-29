@@ -2,30 +2,9 @@ const path = require('path');
 const fetch = require("node-fetch");
 const regeneratorRuntime = require("regenerator-runtime");
 
-// ***************************
-// ******* APP ********
-// ***************************
 
-window.addEventListener('DOMContentLoaded', init);
-
-// **** INIT *******
-function init() {
-    const myToken = '82a95f5e8ca944aac848eecffda7d212bb5b2c5e'
-    const myUsername = 'mlvrkhn';
-    const myURL = 'https://api.github.com/users/';
-    
-    createUserInstance(myURL, myUsername, myToken);
-}
-
-function createUserInstance(url, username, token) {
-        const sdk = new GitHubSDK(url, username, token);
-        sdk.getUserData();
-        console.log(sdk);
-}
-
-// **** INIT *******
 export default class GitHubSDK {
-    constructor(url, username, token) {
+    constructor({url, login: username, token}) {
         this.url = url;
         this.username = username;
         this.token = token;
@@ -34,6 +13,8 @@ export default class GitHubSDK {
     }
     async getUserData() {
         const usersURL = `${this.cors_api_host}${this.url}${this.username}`;
+        console.log("getUserData -> usersURL", usersURL)
+        
 
         // Tutaj mam response, która zwraca obiekt Response. Pozniej muszę go przetłumaczyć na JSON (resp.json()),
         // a następnie juz mam obiekt DATA (jak nizej). Jak mogę zapisać sobie te dane
@@ -48,7 +29,7 @@ export default class GitHubSDK {
             })
             .then(resp => resp.json())
             .then(data => {
-
+                console.log(data);
                 // czy powinienem sprawdzać w testach te wartości albo cokolwiek w data?
                 // rozumiem ze nie skoro nie jest to moj kod?
                 
@@ -65,8 +46,20 @@ export default class GitHubSDK {
                 imgAvatar.setAttribute('src', avatar_url);
                 ifUserHireable.innerHTML = `If hireable: ${hireable}`;
                 userBio.innerHTML = bio;
+
+                return data;
             })
             .catch(err => console.log(err));
+    }
+
+    checkIfValidData(url, username, token) {
+    console.log("checkIfValidData -> username", username)
+    console.log("checkIfValidData -> url", url)
+    console.log("checkIfValidData -> token", token)
+        
+        if (url === undefined || username === undefined || token == undefined) {
+            throw new Error('Missing parameters in instance creation')
+        }
     }
 
     // Co myślisz o kolejnych metodach? Mają sens?
@@ -83,12 +76,6 @@ export default class GitHubSDK {
     
     // **** HELPING FUNCTIONS *******
     // Czy wszystkie funkcje wrzucać do klasy czy te dodatkowe lepiej trzymać poza?
-
-    checkIfValidData(url, username, token) {
-        if (url === undefined || username === undefined || token == undefined) {
-            throw new Error('Missing parameters in instance creation')
-        }
-    }
 };
 
 

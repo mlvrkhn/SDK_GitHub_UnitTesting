@@ -19,16 +19,27 @@ describe('tests for GitHubSDK class', () => {
         });
 
     })
-    // describe('function getUserData()', () => {
-    //     it('fetches and returns user login from API', () => {
+    describe('function getUserData()', () => {
+        it('returns login if proper args passed', async () => {
+            const token = '82a95f5e8ca944aac848eecffda7d212bb5b2c5e'
+            const username = 'mlvrkhn';
+            const url = 'https://api.github.com/users/';
 
-    //     })
-    //     // it('throws if invalid token passed', () => {
+            const sdk = new GitHubSDK(url, username, token);
+            const data = sdk.getUserData();
+            console.log(data);
+            expect(data).toBe('mlvrkhn')
+            }
+        )
+        // it('resolves to truth if valid args passed', () => {
 
-    //     // })
-    //     // it('should include heroku at the beginning of url passet to fetch', () => {
+        // })
+        // it('throws if invalid token passed', () => {
 
-    //     // })
-    // })
+        // })
+        // it('should include heroku at the beginning of url passet to fetch', () => {
+
+        // })
+    })
     
 });
