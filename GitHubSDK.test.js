@@ -13,7 +13,6 @@ describe('tests for GitHubSDK class', () => {
 
         it('throws if arguments are not passed', () => {
             expect.assertions(1);
-        
             expect(() => {
                 const api = new GitHubSDK();
             }).toThrow('Missing parameters in instance creation');

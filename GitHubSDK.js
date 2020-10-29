@@ -13,8 +13,7 @@ function init() {
     const myToken = '82a95f5e8ca944aac848eecffda7d212bb5b2c5e'
     const myUsername = 'mlvrkhn';
     const myURL = 'https://api.github.com/users/';
-
-
+    
     createUserInstance(myURL, myUsername, myToken);
 }
 
@@ -35,6 +34,11 @@ export default class GitHubSDK {
     }
     async getUserData() {
         const usersURL = `${this.cors_api_host}${this.url}${this.username}`;
+
+        // Tutaj mam response, która zwraca obiekt Response. Pozniej muszę go przetłumaczyć na JSON (resp.json()),
+        // a następnie juz mam obiekt DATA (jak nizej). Jak mogę zapisać sobie te dane
+        // które chcę do programy? Tzn jak je wyłuskać z tego łancucha resp().then().catch()?
+
         const response = await fetch(usersURL, {
                 method: 'GET',
                 headers: {
@@ -43,17 +47,42 @@ export default class GitHubSDK {
                 }
             })
             .then(resp => resp.json())
-            .then(data => console.log(data))
+            .then(data => {
+
+                // czy powinienem sprawdzać w testach te wartości albo cokolwiek w data?
+                // rozumiem ze nie skoro nie jest to moj kod?
+                
+                const { login, avatar_url, html_url, hireable, bio } = data;
+
+                const imgAvatar = document.querySelector('.user_avatar');
+                const userLogin = document.querySelector('.user_login');
+                const userWebsite = document.querySelector('.user_homepage');
+                const ifUserHireable = document.querySelector('.user_hireable');
+                const userBio = document.querySelector('.user_bio');
+
+                userLogin.innerText = login;
+                userWebsite.innerHTML = html_url.slice(8);
+                imgAvatar.setAttribute('src', avatar_url);
+                ifUserHireable.innerHTML = `If hireable: ${hireable}`;
+                userBio.innerHTML = bio;
+            })
             .catch(err => console.log(err));
     }
+
+    // Co myślisz o kolejnych metodach? Mają sens?
+
     // list public repos
-    // some code
+        // some code
 
     // toggle repo status (private-public)
-    // some code
+        // some code
+
+    // show activity
+        // some code
     
     
     // **** HELPING FUNCTIONS *******
+    // Czy wszystkie funkcje wrzucać do klasy czy te dodatkowe lepiej trzymać poza?
 
     checkIfValidData(url, username, token) {
         if (url === undefined || username === undefined || token == undefined) {
