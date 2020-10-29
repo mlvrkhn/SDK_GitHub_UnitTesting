@@ -1,5 +1,5 @@
 import GitHubSDK from './GitHubSDK'
-import myData from './token.js'
+import myData from './_token.js'
 
 
 // ***************************
