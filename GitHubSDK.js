@@ -17,7 +17,7 @@ export default class GitHubSDK {
     }
     getUserData() {
         return new Promise((resolve, reject) => {
-            const usersURL = `${this.cors_api_host}${this.url}${this.login}`;
+            const usersURL = `${this.url}${this.login}`;
             const response = fetch(usersURL, {
                     method: 'GET',
                     headers: {

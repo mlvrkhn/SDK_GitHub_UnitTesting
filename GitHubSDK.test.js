@@ -23,22 +23,31 @@ describe('tests for GitHubSDK class', () => {
     })
     describe('function getUserData()', () => {
 
-
-        it('works with promises', () => {
+        it('works with promises', async () => {
             expect.assertions(1);
-            
             const api = new GitHubSDK(myData);
-            const res = api.getUserData();
-            // response not successfull
-            return expect(res).resolves.toEqual('mlvrkhn')
-            // return res.then(data => expect(data.login).toEqual('mlvrkhn'));
+            const res = await api.getUserData();
+            expect(res.login).toBe('mlvrkhn')
         });
         // it('throws if invalid token passed', () => {
 
         // })
+        
         // it('should include heroku at the beginning of url passet to fetch', () => {
 
         // })
     })
+    // describe('function getPublicRepos()', () => {
+
+    //     it('works with promises', async () => {
+    //         expect.assertions(1);
+            
+    //         const api = new GitHubSDK(myData);
+    //         const res = await api.getUserData();
+    //         // response not successfull
+    //         return expect(res).resolves.toEqual('mlvrkhn')
+    //         // return res.then(data => expect(data.login).toEqual('mlvrkhn'));
+    //     });
+    // })
 
 });
