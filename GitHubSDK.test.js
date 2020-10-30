@@ -1,7 +1,9 @@
 import GitHubSDK from './GitHubSDK';
 import myData from './_token';
 // const fetch = require("node-fetch");
-import { expect } from '@jest/globals';
+import {
+    expect
+} from '@jest/globals';
 
 describe('tests for GitHubSDK class', () => {
     describe('GitHubSDK class exitence', () => {
@@ -20,20 +22,17 @@ describe('tests for GitHubSDK class', () => {
 
     })
     describe('function getUserData()', () => {
-        it('returns login ("mlvrkhn") if proper args passed', () => {
-            async function createRequest() {
-                const api = new GitHubSDK(myData);
-                console.log("createRequest -> api", api)
-                const resp = await api.getUserData();
-                console.log("createRequest -> resp", resp)
-            }
-            // console.log('resp tests: ', resp);
-            // expect(createRequest).toBe('mlvrkhn')
 
+
+        it('works with promises', () => {
+            expect.assertions(1);
+            
+            const api = new GitHubSDK(myData);
+            const res = api.getUserData();
+            // response not successfull
+            return expect(res).resolves.toEqual('mlvrkhn')
+            // return res.then(data => expect(data.login).toEqual('mlvrkhn'));
         });
-        // it('resolves to truth if valid args passed', () => {
-
-        // })
         // it('throws if invalid token passed', () => {
 
         // })
@@ -41,5 +40,5 @@ describe('tests for GitHubSDK class', () => {
 
         // })
     })
-    
+
 });

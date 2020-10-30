@@ -13,6 +13,7 @@ async function createUserInstance() {
     populateUserInfo(data);
 }
 function populateUserInfo(data) {
+    console.log(data);
     const { avatar_url, html_url, hireable, bio, login } = data;
     const imgAvatar = document.querySelector('.user_avatar');
     const userLogin = document.querySelector('.user_login');
