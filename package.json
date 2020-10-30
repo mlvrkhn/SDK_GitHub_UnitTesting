@@ -4,7 +4,7 @@
   "description": "API that let's you fetch data from GitHub and perform opeations on it. For example - autoupdate your portfolio.",
   "main": "api.js",
   "scripts": {
-    "test": "jest --watch",
+    "test": "jest --watchAll",
     "start": "webpack-dev-server --open --watch",
     "build": "webpack --mode production"
   },

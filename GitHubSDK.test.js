@@ -1,13 +1,13 @@
 import GitHubSDK from './GitHubSDK';
+import myData from './_token';
 // const fetch = require("node-fetch");
 import { expect } from '@jest/globals';
-
 
 describe('tests for GitHubSDK class', () => {
     describe('GitHubSDK class exitence', () => {
 
         it('checks if the instance of a GitHubSDK class is created', () => {
-            const api = new GitHubSDK('url', 'login', 'token');
+            const api = new GitHubSDK(myData);
             expect(api).toBeInstanceOf(GitHubSDK);
         });
 
@@ -15,22 +15,22 @@ describe('tests for GitHubSDK class', () => {
             expect.assertions(1);
             expect(() => {
                 const api = new GitHubSDK();
-            }).toThrow('Missing parameters in instance creation');
+            }).toThrow();
         });
 
     })
     describe('function getUserData()', () => {
-        it('returns login if proper args passed', async () => {
-            const token = '82a95f5e8ca944aac848eecffda7d212bb5b2c5e'
-            const username = 'mlvrkhn';
-            const url = 'https://api.github.com/users/';
-
-            const sdk = new GitHubSDK(url, username, token);
-            const data = sdk.getUserData();
-            console.log(data);
-            expect(data).toBe('mlvrkhn')
+        it('returns login ("mlvrkhn") if proper args passed', () => {
+            async function createRequest() {
+                const api = new GitHubSDK(myData);
+                console.log("createRequest -> api", api)
+                const resp = await api.getUserData();
+                console.log("createRequest -> resp", resp)
             }
-        )
+            // console.log('resp tests: ', resp);
+            // expect(createRequest).toBe('mlvrkhn')
+
+        });
         // it('resolves to truth if valid args passed', () => {
 
         // })
