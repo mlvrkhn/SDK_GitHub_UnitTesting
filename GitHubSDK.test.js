@@ -74,4 +74,27 @@ describe('tests for GitHubSDK class', () => {
             }
         });
     })
+
+    describe('function toggleRepoPrivacy()', () => {
+
+        it('throws if args are not passed', async () => {
+            try {
+                const sdk = new GitHubSDK(myData);
+                sdk.toggleRepoPrivacy();
+            } catch (e) {
+                expect(e).toEqual(Error('Invalid arguments passed'));
+            }
+        })
+
+        it('resolves if repo status is set to private', async () => {
+
+            function toggleRepo() {
+                const sdk = new GitHubSDK();
+                const respond = sdk.toggleRepoPrivacy('codenotes_martin', true);
+                console.log(respond);
+                return respond
+            }
+            await expect(toggleRepo()).toReturn();
+        })
+    })
 });

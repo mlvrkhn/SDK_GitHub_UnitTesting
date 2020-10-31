@@ -1,19 +1,21 @@
 import GitHubSDK from './GitHubSDK'
 import myData from './_token.js'
 
-// ***************************
-// ******* APP ***************
-// ***************************
+// *******************************
+// *********** APP ***************
+// *******************************
 
 window.addEventListener('DOMContentLoaded', createUserInstance);
 
 async function createUserInstance() {
     const sdk = new GitHubSDK(myData);
     const data = await sdk.getUserData();
-    const repos = await sdk.getPublicRepos('kevwil', 5);
+    const repos = await sdk.getPublicRepos();
 
+    sdk.toggleRepoPrivacy('sketchpad', true)
     populateUserInfo(data);
     updateRepositoriesView(repos)
+    
 }
 function populateUserInfo(data) {
     const { avatar_url, html_url, hireable, bio, login } = data;
@@ -47,11 +49,11 @@ function updateRepositoriesView(data) {
         const repoDescription = newElement.querySelector('.repo__description');        
         const parent = repoElement.parentNode;
 
-        repoTitle.textContent = `Name: ${name}`;
-        repoHTML.textContent = `WWW: ${html_url}`;
-        repoHTML.setAttribute('href', html_url)
-        repoCreatedAt.textContent = `Created at: ${created}`;
-        repoUpdatedAt.textContent = `Updated at: ${updated}`;
+        repoTitle.textContent = name;
+        repoHTML.textContent = html_url;
+        repoHTML.setAttribute('href', html_url);
+        repoCreatedAt.textContent = `created: ${created}`;
+        repoUpdatedAt.textContent = `updated: ${updated}`;
         repoDescription.textContent = description;
         
         parent.appendChild(newElement);

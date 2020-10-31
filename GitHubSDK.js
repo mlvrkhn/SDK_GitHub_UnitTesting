@@ -17,8 +17,10 @@ export default class GitHubSDK {
     }
     getUserData() {
         return new Promise((resolve, reject) => {
-            const usersURL = `${this.cors_api_host}${this.url}${this.login}`;
-            const usersURLnoCors = `${this.url}${this.login}`;
+            const usersURL = `${this.cors_api_host}${this.url}users/${this.login}`;
+            const usersURLnoCors = `${this.url}users/${this.login}`;
+            console.log("GitHubSDK -> getUserData -> usersURLnoCors", usersURLnoCors)
+            
 
             fetch(usersURLnoCors, {
                     method: 'GET',
@@ -40,14 +42,14 @@ export default class GitHubSDK {
                 .catch(err => console.log(err));
         })
     };
-    getPublicRepos(userToCheck = this.login, nrOfRepos = 10) {
+    getPublicRepos(userToCheck = this.login, nrOfRepos = 5) {
         if (typeof userToCheck !== 'string' || typeof nrOfRepos !== 'number') {
             throw new Error('Invalid arguments!')
         } else {
 
             return new Promise((resolve, reject) => {
-                const reposURL = `${this.cors_api_host}${this.url}${userToCheck}/repos?sort=updated&per_page=${nrOfRepos}`;
-                const reposURLnoCors = `${this.url}${userToCheck}/repos?sort=updated&per_page=${nrOfRepos}`;
+                const reposURL = `${this.cors_api_host}${this.url}users/${userToCheck}/repos?sort=updated&per_page=${nrOfRepos}`;
+                const reposURLnoCors = `${this.url}users/${userToCheck}/repos?sort=updated&per_page=${nrOfRepos}`;
         
                 fetch(reposURLnoCors, {
                     method: 'GET',
@@ -72,6 +74,33 @@ export default class GitHubSDK {
             })
         }
     }
+    toggleRepoPrivacy(repoName, ifPrivate) {
+        if (typeof repoName !== 'string' || typeof ifPrivate !== 'boolean') {
+            throw new Error('Invalid arguments passed')
+        } else {
+            console.log('else');
+            const targetStatus = {
+                private: `${ifPrivate}`
+            }
+            const reposPrefix = 'repos'
+            const usersURL = `${this.cors_api_host}${this.url}${reposPrefix}/${this.login}/${repoName}`;
+            console.log("GitHubSDK -> toggleRepoPrivacy -> usersURL", usersURL)
+            const usersURLnoCors = `${this.url}${reposPrefix}/${this.login}/${repoName}`;; 
+            console.log("GitHubSDK -> toggleRepoPrivacy -> usersURLnoCors", usersURLnoCors)
+
+            
+            fetch(usersURLnoCors, {
+                method: 'PUT',
+                header: {
+                    Accept: 'application/api.github.v3+json',
+                    Authorization: `token ${this.token}`,
+                },
+                body: JSON.stringify(targetStatus)
+            })
+            .then(resp => resp.json())
+            .then(data => console.log(data));
+        }
+    }
 
     checkIfValidData(url, login, token) {
         if (url === undefined || login === undefined || token == undefined) {
@@ -81,9 +110,6 @@ export default class GitHubSDK {
         }
     }
 };
-
-    // toggle repo status (private-public)
-    // some code
 
     // show activity
     // some code
