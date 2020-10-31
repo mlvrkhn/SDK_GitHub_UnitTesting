@@ -8,12 +8,14 @@ import myData from './_token.js'
 window.addEventListener('DOMContentLoaded', createUserInstance);
 
 async function createUserInstance() {
-    const sdk = new GitHubSDK(myData);
-    const data = await sdk.getUserData();
-    populateUserInfo(data);
+    // const sdk = new GitHubSDK(myData);
+    // const data = await sdk.getUserData();
+    // const repos = await sdk.getPublicRepos('kevwil', 20);
+
+    console.log('repos from api.js: ', repos);
+    // populateUserInfo(data);
 }
 function populateUserInfo(data) {
-    console.log(data);
     const { avatar_url, html_url, hireable, bio, login } = data;
     const imgAvatar = document.querySelector('.user_avatar');
     const userLogin = document.querySelector('.user_login');

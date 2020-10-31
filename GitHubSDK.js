@@ -17,8 +17,10 @@ export default class GitHubSDK {
     }
     getUserData() {
         return new Promise((resolve, reject) => {
-            const usersURL = `${this.url}${this.login}`;
-            const response = fetch(usersURL, {
+            const usersURL = `${this.cors_api_host}${this.url}${this.login}`;
+            const usersURLnoCors = `${this.url}${this.login}`;
+
+            fetch(usersURLnoCors, {
                     method: 'GET',
                     headers: {
                         Accept: 'application/vnd.github.v3+json',
@@ -28,28 +30,53 @@ export default class GitHubSDK {
                 .then(response => {
                     if (!response.ok) {
                         console.log('response not successfull');
-                        reject(new Error(`HTTP Error ${response.status}`));
+                        reject(new Error(`HTTP Error`));
                     } else {
                         return response.json();
                     }
                 })
                 .then(data => {
-                    // console.log(data.login);
                     resolve(data);
                 })
                 .catch(err => console.log(err));
         })
     };
+    getPublicRepos(userToCheck = this.login, nrOfRepos = 10) {
+        return new Promise((resolve, reject) => {
+            const reposURL = `${this.cors_api_host}${this.url}${userToCheck}/repos?sort=updated&per_page=${nrOfRepos}`;
+    
+            fetch(reposURL, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/vnd.github.v3+json',
+                    Authorization: `token ${this.token}`,
+                }
+            })
+            .then(res => {
+                if (!res.ok) {
+                    reject(new Error('Fetching unsuccessfull'));
+                } else {
+                    console.log(res);
+                    return res.json()
+                }
+            })
+            .then(data => {
+                resolve(data)
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        })
+    }
+
     checkIfValidData(url, login, token) {
         if (url === undefined || login === undefined || token == undefined) {
             throw new Error('Missing parameters in instance creation')
+        } else {
+            return;
         }
     }
 };
-
-
-// list public repos
-    // some code
 
     // toggle repo status (private-public)
     // some code

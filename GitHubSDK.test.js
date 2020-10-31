@@ -23,31 +23,55 @@ describe('tests for GitHubSDK class', () => {
     })
     describe('function getUserData()', () => {
 
-        it('works with promises', async () => {
+        it('expected to return login - "mlvrkhn"', async () => {
             expect.assertions(1);
             const api = new GitHubSDK(myData);
             const res = await api.getUserData();
             expect(res.login).toBe('mlvrkhn')
         });
-        // it('throws if invalid token passed', () => {
 
-        // })
-        
-        // it('should include heroku at the beginning of url passet to fetch', () => {
+        it('throws if wrong invalid arguments passed', async () => {
+            expect.assertions(1);
 
-        // })
+            try {
+                const fakeData = {
+                    token: 'xzy',
+                    login: 'mlvrkhn',
+                    url: 'https://api.github.com/users/'
+                }
+                const api = new GitHubSDK(fakeData);
+                const res = await api.getUserData();
+            } catch (error) {
+                expect(error).toEqual(Error('HTTP Error'))
+            }
+        })
     })
-    // describe('function getPublicRepos()', () => {
+    describe('function getPublicRepos()', () => {
+        
+        it('throws if no arguments passed to getPublicRepos()', async () => {
+            expect.assertions(1);
 
-    //     it('works with promises', async () => {
-    //         expect.assertions(1);
-            
-    //         const api = new GitHubSDK(myData);
-    //         const res = await api.getUserData();
-    //         // response not successfull
-    //         return expect(res).resolves.toEqual('mlvrkhn')
-    //         // return res.then(data => expect(data.login).toEqual('mlvrkhn'));
-    //     });
-    // })
+            try {
+                const api = new GitHubSDK(myData);
+                const res = await api.getPublicRepos();
+            } catch (error) {
+                expect(error).toEqual(Error('Fetching unsuccessfull'))
+            }
+        });
 
+        it('returns object with 10 items', async () => {
+            expect.assertions(1);
+
+            function fetchTenItems() {
+                const sdk = new GitHubSDK(myData);
+                const repos = sdk.getPublicRepos();
+                repos.then(resp => resp.json()).then(data => {
+                    console.log('DATKO: ', data);
+                    data.length
+                });
+            }
+            await expect(fetchTenItems()).toBe(10);
+
+        });
+    })
 });
