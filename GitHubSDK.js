@@ -13,7 +13,7 @@ export default class GitHubSDK {
         this.login = login;
         this.token = token;
         this.cors_api_host = 'https://cors-anywhere.herokuapp.com/';
-        this.checkIfValidData(this.url, this.login, this.token);
+        // this.checkIfValidData(this.url, this.login, this.token);
     }
     getUserData() {
         return new Promise((resolve, reject) => {
@@ -42,31 +42,36 @@ export default class GitHubSDK {
         })
     };
     getPublicRepos(userToCheck = this.login, nrOfRepos = 10) {
-        return new Promise((resolve, reject) => {
-            const reposURL = `${this.cors_api_host}${this.url}${userToCheck}/repos?sort=updated&per_page=${nrOfRepos}`;
-    
-            fetch(reposURL, {
-                method: 'GET',
-                headers: {
-                    Accept: 'application/vnd.github.v3+json',
-                    Authorization: `token ${this.token}`,
-                }
+        if (typeof userToCheck !== 'string' || typeof nrOfRepos !== 'number') {
+            throw new Error('Invalid arguments!')
+        } else {
+
+            return new Promise((resolve, reject) => {
+                const reposURL = `${this.cors_api_host}${this.url}${userToCheck}/repos?sort=updated&per_page=${nrOfRepos}`;
+                const reposURLnoCors = `${this.url}${userToCheck}/repos?sort=updated&per_page=${nrOfRepos}`;
+        
+                fetch(reposURLnoCors, {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/vnd.github.v3+json',
+                        Authorization: `token ${this.token}`,
+                    }
+                })
+                .then(res => {
+                    if (!res.ok) {
+                        reject(new Error('Fetching unsuccessfull'));
+                    } else {
+                        return res.json()
+                    }
+                })
+                .then(data => {
+                    resolve(data)
+                })
+                .catch(err => {
+                    console.log(err);
+                })
             })
-            .then(res => {
-                if (!res.ok) {
-                    reject(new Error('Fetching unsuccessfull'));
-                } else {
-                    console.log(res);
-                    return res.json()
-                }
-            })
-            .then(data => {
-                resolve(data)
-            })
-            .catch(err => {
-                console.log(err);
-            })
-        })
+        }
     }
 
     checkIfValidData(url, login, token) {

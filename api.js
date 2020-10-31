@@ -8,9 +8,9 @@ import myData from './_token.js'
 window.addEventListener('DOMContentLoaded', createUserInstance);
 
 async function createUserInstance() {
-    // const sdk = new GitHubSDK(myData);
+    const sdk = new GitHubSDK(myData);
     // const data = await sdk.getUserData();
-    // const repos = await sdk.getPublicRepos('kevwil', 20);
+    const repos = await sdk.getPublicRepos('kevwil', 20);
 
     console.log('repos from api.js: ', repos);
     // populateUserInfo(data);
