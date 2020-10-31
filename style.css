@@ -1,21 +1,23 @@
 body {
     background-color: darkslategrey;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-p {
     color: whitesmoke;
 }
 .porfolio__container {
-    min-width: 1200px;
-    height: 400px;
-    border: 1px solid coral;
+    width: 1200px;
+    height: auto;
+    /* border: 1px solid coral; */
     display: flex;
     justify-content: center;
 }
 .portfolio__element {
     border: 1px solid darkolivegreen;
-    width: 300px;
+    width: 100%;
+    /* width: 350px; */
     /* justify-items: center; */
+}
+.element__data-repositories {
+    width: 400px;
 }
 .title {
     color: coral;
@@ -28,4 +30,33 @@ p {
 }
 .element__data-user-info > p  {
     margin: 12px 0;
+}
+.repo__container-proto {
+    display: none;
+}
+.repo__container {
+    border: 1px solid whitesmoke;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    margin: 5px;
+}
+.repo__container > * {
+    margin: 3px 0;
+}
+.repo__title {
+    font-size: 1.3em;
+}
+.repo__html {
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    color: coral;
+}
+.repo__description, .repo__created-at,
+.repo__updated-at {
+    font-size: 12px;
 }

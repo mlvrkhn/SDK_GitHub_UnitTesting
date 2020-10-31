@@ -21,38 +21,38 @@ describe('tests for GitHubSDK class', () => {
         });
 
     })
-    // describe('function getUserData()', () => {
+    describe('function getUserData()', () => {
 
-    //     it('expected to return login - "mlvrkhn"', async () => {
-    //         expect.assertions(1);
-    //         const api = new GitHubSDK(myData);
-    //         const res = await api.getUserData();
-    //         expect(res.login).toBe('mlvrkhn')
-    //     });
+        it('expected to return login - "mlvrkhn"', async () => {
+            expect.assertions(1);
+            const api = new GitHubSDK(myData);
+            const res = await api.getUserData();
+            expect(res.login).toBe('mlvrkhn')
+        });
 
-    //     it('throws if wrong invalid arguments passed', async () => {
-    //         expect.assertions(1);
+        it('throws if wrong invalid arguments passed', async () => {
+            expect.assertions(1);
 
-    //         try {
-    //             const fakeData = {
-    //                 token: 'xzy',
-    //                 login: 'mlvrkhn',
-    //                 url: 'https://api.github.com/users/'
-    //             }
-    //             const api = new GitHubSDK(fakeData);
-    //             const res = await api.getUserData();
-    //         } catch (error) {
-    //             expect(error).toEqual(Error('HTTP Error'))
-    //         }
-    //     })
-    // })
+            try {
+                const fakeData = {
+                    token: 'xzy',
+                    login: 'mlvrkhn',
+                    url: 'https://api.github.com/users/'
+                }
+                const api = new GitHubSDK(fakeData);
+                const res = await api.getUserData();
+            } catch (error) {
+                expect(error).toEqual(Error('HTTP Error'))
+            }
+        })
+    })
     describe('function getPublicRepos()', () => {
         
         it('throws if invalid arguments passed to getPublicRepos()', async () => {
             expect.assertions(1);
             try {
                 const api = new GitHubSDK(myData);
-                const res = await api.getPublicRepos('string', 'string2');
+                await api.getPublicRepos('string', 'string2');
             } catch (e) {
                 expect(e).toEqual(Error('Invalid arguments!'))
             }
@@ -60,12 +60,18 @@ describe('tests for GitHubSDK class', () => {
 
         it('returns object with 2 items', async () => {
             expect.assertions(1);
-
-            // async function fetchTenItems() {
             const sdk = new GitHubSDK(myData);
             const repos = await sdk.getPublicRepos('kevwil', 2);
             return expect(repos.length).toBe(2);
+        });
 
+        it('will throw if undefined is passed into method', async () => {
+            expect.assertions(1);
+            try {
+                await sdk.getPublicRepos([], 2);
+            } catch (e) {
+                expect(e).toEqual(ReferenceError('sdk is not defined'))
+            }
         });
     })
 });

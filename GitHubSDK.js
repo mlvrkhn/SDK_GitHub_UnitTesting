@@ -29,7 +29,6 @@ export default class GitHubSDK {
                 })
                 .then(response => {
                     if (!response.ok) {
-                        console.log('response not successfull');
                         reject(new Error(`HTTP Error`));
                     } else {
                         return response.json();

@@ -9,11 +9,11 @@ window.addEventListener('DOMContentLoaded', createUserInstance);
 
 async function createUserInstance() {
     const sdk = new GitHubSDK(myData);
-    // const data = await sdk.getUserData();
-    const repos = await sdk.getPublicRepos('kevwil', 20);
+    const data = await sdk.getUserData();
+    const repos = await sdk.getPublicRepos('kevwil', 5);
 
-    console.log('repos from api.js: ', repos);
-    // populateUserInfo(data);
+    populateUserInfo(data);
+    updateRepositoriesView(repos)
 }
 function populateUserInfo(data) {
     const { avatar_url, html_url, hireable, bio, login } = data;
@@ -28,6 +28,34 @@ function populateUserInfo(data) {
     imgAvatar.setAttribute('src', avatar_url);
     ifUserHireable.innerText = `If hireable: ${hireable}`;
     userBio.innerText = bio;
+}
+function updateRepositoriesView(data) {
+    const protoSelector = 'repo__container-proto'
+    const repoElement = document.querySelector('.' + protoSelector);
+
+    data.forEach(repo => {
+        const {name, created_at, updated_at, html_url, description} = repo;        
+        const newElement = repoElement.cloneNode(true);
+        newElement.classList.remove(protoSelector)
+
+        const created = created_at.slice(0, 10);
+        const updated = updated_at.slice(0, 10);
+        const repoTitle = newElement.querySelector('.repo__title');        
+        const repoHTML = newElement.querySelector('.repo__html');
+        const repoCreatedAt = newElement.querySelector('.repo__created-at');        
+        const repoUpdatedAt = newElement.querySelector('.repo__updated-at');        
+        const repoDescription = newElement.querySelector('.repo__description');        
+        const parent = repoElement.parentNode;
+
+        repoTitle.textContent = `Name: ${name}`;
+        repoHTML.textContent = `WWW: ${html_url}`;
+        repoHTML.setAttribute('href', html_url)
+        repoCreatedAt.textContent = `Created at: ${created}`;
+        repoUpdatedAt.textContent = `Updated at: ${updated}`;
+        repoDescription.textContent = description;
+        
+        parent.appendChild(newElement);
+    });
 }
 // sdk.getUserProfile();
 // sdk.listPublicRepos();
