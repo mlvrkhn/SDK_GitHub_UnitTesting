@@ -1,5 +1,5 @@
-import GitHubSDK from './GitHubSDK';
-import myData from './_token';
+import GitHubSDK from './src/GitHubSDK';
+import myData from './src/_token';
 // const fetch = require("node-fetch");
 import {
     expect

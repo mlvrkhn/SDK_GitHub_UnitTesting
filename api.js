@@ -1,9 +1,9 @@
 import GitHubSDK from './src/GitHubSDK'
 import { myData, newRepoData } from './src/_token.js'
 
-// *******************************
-// *********** APP ***************
-// *******************************
+// ***************************
+// ******* APP ***************
+// ***************************
 
 window.addEventListener('DOMContentLoaded', createUserInstance);
 
@@ -50,11 +50,11 @@ function updateRepositoriesView(data) {
         const repoDescription = newElement.querySelector('.repo__description');        
         const parent = repoElement.parentNode;
 
-        repoTitle.textContent = name;
-        repoHTML.textContent = html_url;
-        repoHTML.setAttribute('href', html_url);
-        repoCreatedAt.textContent = `created: ${created}`;
-        repoUpdatedAt.textContent = `updated: ${updated}`;
+        repoTitle.textContent = `Name: ${name}`;
+        repoHTML.textContent = `WWW: ${html_url}`;
+        repoHTML.setAttribute('href', html_url)
+        repoCreatedAt.textContent = `Created at: ${created}`;
+        repoUpdatedAt.textContent = `Updated at: ${updated}`;
         repoDescription.textContent = description;
         
         parent.appendChild(newElement);
