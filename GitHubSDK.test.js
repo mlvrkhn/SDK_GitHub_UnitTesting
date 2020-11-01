@@ -26,7 +26,7 @@ describe('tests for GitHubSDK class', () => {
     describe('function getUserData()', () => {
 
         it('expected to return login - "mlvrkhn"', async () => {
-            // expect.assertions(1);
+            expect.assertions(1);
             const api = new GitHubSDK(myData);
             const res = await api.getUserData();
             expect(res.login).toBe('mlvrkhn')
@@ -80,8 +80,6 @@ describe('tests for GitHubSDK class', () => {
     describe('function toggleRepoPrivacy()', () => {
 
         it('throws if args are not passed', async () => {
-            expect.assertions(1);
-
             try {
                 const sdk = new GitHubSDK(myData);
                 sdk.toggleRepoPrivacy();
@@ -90,31 +88,20 @@ describe('tests for GitHubSDK class', () => {
             }
         })
 
-        it('throws if arg isPrivate is not type boolean', async () => {
-            expect.assertions(1);
-
-            try {
-                const sdk = new GitHubSDK(myData);
-                sdk.toggleRepoPrivacy('sketchpad', 10);
-            } catch (e) {
-                expect(e).toEqual(Error('Invalid arguments passed'));
-            }
-        })
-
-        // look into this test again
-        it('resolves if repo status is toggled', async () => {
-        expect.assertions(1);
+        it('resolves if repo status is set to private', async () => {
 
             function toggleRepo() {
-                const sdk = new GitHubSDK(myData);
+                const sdk = new GitHubSDK();
                 const respond = sdk.toggleRepoPrivacy('codenotes_martin', true);
+                console.log(respond);
+                return respond
             }
             await expect(toggleRepo()).toReturn();
         })
 
         it ('resolves to set status to private (true)', async () => {
             expect.assertions(1);
-
+    
             const repoName = 'sketchpad';
             const ifPrivate = true;
             const github = new GitHubSDK(myData);
@@ -122,6 +109,8 @@ describe('tests for GitHubSDK class', () => {
             console.log('res', res);
             return expect(res).toReturn();
         });
+    })
+
     })
 
     describe('function createRepo', () => {
@@ -151,4 +140,14 @@ describe('tests for GitHubSDK class', () => {
             return createFakeRepo().then(resp => expect(resp.name).toBe('example_repo'));
         });
     });
-});
+
+
+
+
+
+
+
+
+
+
+
