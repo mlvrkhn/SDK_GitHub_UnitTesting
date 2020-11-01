@@ -3,6 +3,11 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: whitesmoke;
 }
+
+.container {
+    padding: 15px;
+}
+
 .porfolio__container {
     width: 1200px;
     height: auto;
@@ -10,44 +15,54 @@ body {
     display: flex;
     justify-content: center;
 }
+
 .portfolio__element {
-    border: 1px solid darkolivegreen;
+    /* border: 1px solid darkolivegreen; */
     width: 100%;
     /* width: 350px; */
     /* justify-items: center; */
 }
+
 .element__data-repositories {
     width: 400px;
 }
+
 .title {
     color: coral;
     border-radius: 5px;
     margin: 10px 0;
-    font-size: 20px;
+    font-size: 1.5em;
 }
+
 .user_avatar {
     max-width: 160px;
 }
-.element__data-user-info > p  {
+
+.element__data-user-info>p {
     margin: 12px 0;
 }
+
 .repo__container-proto {
     display: none;
 }
+
 .repo__container {
     border: 1px solid whitesmoke;
     border-radius: 5px;
-    display: flex;
-    flex-direction: column;
+    box-shadow: 3px 3px 0 1px;
     padding: 5px;
-    margin: 5px;
+    margin-right: 15px;
+    margin-bottom: 20px;
 }
-.repo__container > * {
+
+.repo__container>* {
     margin: 3px 0;
 }
+
 .repo__title {
-    font-size: 1.3em;
+    font-size: 1.5em;
 }
+
 .repo__html {
     text-decoration: none;
     text-overflow: ellipsis;
@@ -55,8 +70,116 @@ body {
     overflow: hidden;
     width: 100%;
     color: coral;
+    font-size: 12px;
 }
-.repo__description, .repo__created-at,
+
+.repo__description {
+    font-size: 13px;
+    width: 100%;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.repo__created-at,
 .repo__updated-at {
     font-size: 12px;
+    text-align: right;
+}
+
+body {
+    background-color: darkslategrey;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: whitesmoke;
+}
+
+.container {
+    padding: 15px;
+}
+
+.porfolio__container {
+    width: 1200px;
+    height: auto;
+    /* border: 1px solid coral; */
+    display: flex;
+    justify-content: center;
+}
+
+.portfolio__element {
+    /* border: 1px solid darkolivegreen; */
+    width: 100%;
+    /* width: 350px; */
+    /* justify-items: center; */
+}
+
+.element__data-repositories {
+    width: 400px;
+}
+
+.title {
+    color: coral;
+    border-radius: 5px;
+    margin: 10px 0;
+    font-size: 1.5em;
+}
+
+.user_avatar {
+    max-width: 160px;
+}
+
+.element__data-user-info>p {
+    margin: 12px 0;
+}
+
+.repo__container-proto {
+    display: none;
+}
+
+.repo__container {
+    border: 1px solid whitesmoke;
+    border-radius: 5px;
+    box-shadow: 3px 3px 0 1px;
+    padding: 5px;
+    margin-right: 15px;
+    margin-bottom: 20px;
+}
+
+.repo__container>* {
+    margin: 3px 0;
+}
+
+.repo__title {
+    font-size: 1.5em;
+}
+
+.repo__html {
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    color: coral;
+    font-size: 12px;
+}
+
+.repo__description {
+    font-size: 13px;
+    width: 100%;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.repo__created-at,
+.repo__updated-at {
+    font-size: 12px;
+    text-align: right;
 }

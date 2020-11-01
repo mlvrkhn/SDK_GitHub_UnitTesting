@@ -90,7 +90,6 @@ export default class GitHubSDK {
                 const usersUrl = `${this.url}${reposPrefix}/${this.login}/${repoName}`;
                 const usersUrlQuery = `${this.url}${reposPrefix}/${this.login}/${repoName}?private=${ifPrivate}`;
 
-
                 const mediaType = 'application/api.github.v3+json';
                 const mediaTypePreview = 'application/vnd.github.nebula-preview+json';
 
@@ -120,33 +119,27 @@ export default class GitHubSDK {
         })
     }
 
-    createRepo(repoName, ifPrivate) {
+    createRepo(repoData) {
+        console.log(repoData);
+        const { name, description } = repoData;
+
         return new Promise((resolve, reject) => {
-            if (typeof repoName !== 'string' || typeof ifPrivate !== 'boolean') {
-                console.log('toggle rejected');
+            if (typeof name !== 'string' || typeof description !== 'string') {
+                console.log('kurwa');
                 reject(new Error('Invalid arguments passed'));
             } else {
-                console.log('toggle through');
-                const targetStatus = { private: `${ifPrivate}` };
-                const reposPrefix = 'repos';
-                const usersUrlCors = `${this.cors_api_host}${this.url}${reposPrefix}/${this.login}/${repoName}`;
-                const usersUrl = `${this.url}${reposPrefix}/${this.login}/${repoName}`;
-                const usersUrlQuery = `${this.url}${reposPrefix}/${this.login}/${repoName}?private=${ifPrivate}`;
-
-                const mediaType = 'application/api.github.v3+json';
-                const mediaTypePreview = 'application/vnd.github.nebula-preview+json';
-
-                const postmanURL = 'https://api.github.com/repos/mlvrkhn/sketchpad';
-                const postmanURLCors = 'https://cors-anywhere.herokuapp.com/https://api.github.com/repos/mlvrkhn/sketchpad';
+                console.log('czemu');
+                const url = `${this.url}user/repos`
     
-                fetch(postmanURL, {
-                    method: 'PATCH',
+                fetch(url, {
+                    method: 'POST',
                     header: {
                         Accept: 'application/api.github.v3+json',
                         Authorization: `token ${this.token}`
                     },
                     body: {
-                        private: true
+                        name: `${name}`,
+                        description: `${description}`
                     }
                 })
                     .then(resp => {
