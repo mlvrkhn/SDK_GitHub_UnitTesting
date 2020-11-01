@@ -12,7 +12,7 @@ async function createUserInstance() {
 
     const data = await sdk.getUserData();
     const repos = await sdk.getPublicRepos();
-    // const toggleRespond = await sdk.toggleRepoPrivacy('sketchpad', true);
+    const toggleRespond = await sdk.toggleRepoPrivacy('sketchpad', true);
     // const newRepoRespond = await sdk.createRepo(newRepoData);
 
     populateUserInfo(data);

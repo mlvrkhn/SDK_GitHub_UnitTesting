@@ -2,7 +2,7 @@
   "name": "github-sdk-api",
   "version": "1.0.0",
   "description": "API that let's you fetch data from GitHub and perform opeations on it. For example - autoupdate your portfolio.",
-  "main": "./api.js",
+  "main": "api.js",
   "scripts": {
     "test": "jest --watchAll",
     "start": "webpack-dev-server --open --watch",
