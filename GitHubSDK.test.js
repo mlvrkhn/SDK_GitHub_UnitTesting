@@ -26,7 +26,7 @@ describe('tests for GitHubSDK class', () => {
     describe('function getUserData()', () => {
 
         it('expected to return login - "mlvrkhn"', async () => {
-            expect.assertions(1);
+            // expect.assertions(1);
             const api = new GitHubSDK(myData);
             const res = await api.getUserData();
             expect(res.login).toBe('mlvrkhn')
