@@ -1,6 +1,8 @@
-import GitHubSDK from './GitHubSDK';
-import myData from './_token';
+import GitHubSDK from './src/GitHubSDK';
+import myData from './src/_token';
 // const fetch = require("node-fetch");
+
+
 import {
     expect
 } from '@jest/globals';
@@ -78,6 +80,8 @@ describe('tests for GitHubSDK class', () => {
     describe('function toggleRepoPrivacy()', () => {
 
         it('throws if args are not passed', async () => {
+            expect.assertions(1);
+
             try {
                 const sdk = new GitHubSDK(myData);
                 sdk.toggleRepoPrivacy();
@@ -86,15 +90,65 @@ describe('tests for GitHubSDK class', () => {
             }
         })
 
-        it('resolves if repo status is set to private', async () => {
+        it('throws if arg isPrivate is not type boolean', async () => {
+            expect.assertions(1);
+
+            try {
+                const sdk = new GitHubSDK(myData);
+                sdk.toggleRepoPrivacy('sketchpad', 10);
+            } catch (e) {
+                expect(e).toEqual(Error('Invalid arguments passed'));
+            }
+        })
+
+        // look into this test again
+        it('resolves if repo status is toggled', async () => {
+        expect.assertions(1);
 
             function toggleRepo() {
-                const sdk = new GitHubSDK();
+                const sdk = new GitHubSDK(myData);
                 const respond = sdk.toggleRepoPrivacy('codenotes_martin', true);
-                console.log(respond);
-                return respond
             }
             await expect(toggleRepo()).toReturn();
         })
+
+        it ('resolves to set status to private (true)', async () => {
+            expect.assertions(1);
+
+            const repoName = 'sketchpad';
+            const ifPrivate = true;
+            const github = new GitHubSDK(myData);
+            const res = await github.toggleRepoPrivacy('sktechpad', true);
+            console.log('res', res);
+            return expect(res).toReturn();
+        });
     })
+
+    describe('function createRepo', () => {
+
+        it ('throws if argument if name is not privided', async () => {
+            expect.assertions(1);
+
+            await expect(() => {
+                const git = new GitHubSDK(myData);
+                const resp = git.createRepo();                
+            }).toThrow(); 
+        });
+
+        it ('resolves and returns "example_repo"', async () => {
+            expect.assertions(1)
+
+            const newRepoData = {
+                name: "example_repo",
+                description: "this is test repo for GitHubSDK"
+            }
+
+            await function createFakeRepo() {
+                const git = new GitHubSDK(myData);
+                const resp = git.createRepo(newRepoData);
+                return resp;
+            }
+            return createFakeRepo().then(resp => expect(resp.name).toBe('example_repo'));
+        });
+    });
 });

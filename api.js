@@ -1,5 +1,5 @@
-import GitHubSDK from './GitHubSDK'
-import myData from './_token.js'
+import GitHubSDK from './src/GitHubSDK'
+import { myData, newRepoData } from './src/_token.js'
 
 // *******************************
 // *********** APP ***************
@@ -9,13 +9,14 @@ window.addEventListener('DOMContentLoaded', createUserInstance);
 
 async function createUserInstance() {
     const sdk = new GitHubSDK(myData);
+
     const data = await sdk.getUserData();
     const repos = await sdk.getPublicRepos();
+    // const toggleRespond = await sdk.toggleRepoPrivacy('sketchpad', true);
+    // const newRepoRespond = await sdk.createRepo(newRepoData);
 
-    sdk.toggleRepoPrivacy('sketchpad', true)
     populateUserInfo(data);
-    updateRepositoriesView(repos)
-    
+    updateRepositoriesView(repos);
 }
 function populateUserInfo(data) {
     const { avatar_url, html_url, hireable, bio, login } = data;
