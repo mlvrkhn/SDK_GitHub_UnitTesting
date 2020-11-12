@@ -80,11 +80,9 @@ export default class GitHubSDK {
         return new Promise((resolve, reject) => {
             
             if (typeof repoName !== 'string' || typeof ifPrivate !== 'boolean') {
-                console.log('toggle rejected');
                 reject(new Error('Invalid arguments passed'));
             } else {
-                console.log('toggle through');
-                const targetStatus = { private: `${ifPrivate}` };
+                const targetStatus = { 'private': `${ifPrivate}` };
                 const reposPrefix = 'repos';
                 const usersUrlCors = `${this.cors_api_host}${this.url}${reposPrefix}/${this.login}/${repoName}`;
                 const usersUrl = `${this.url}${reposPrefix}/${this.login}/${repoName}`;
@@ -98,62 +96,55 @@ export default class GitHubSDK {
     
                 fetch(postmanURL, {
                     method: 'PATCH',
-                    header: {
-                        Accept: 'application/api.github.v3+json',
+                    headers: {
+                        Accept: 'application/vnd.github.v3+json',
                         Authorization: `token ${this.token}`
                     },
-                    body: {
-                        private: true
-                    }
+                    body: JSON.stringify(targetStatus)
                 })
-                    .then(resp => {
-                        const rep = resp.json();
-                        console.log('resp.json(): ', rep);
-                        return rep;
-                    })
-                    .then(data => {
-                        console.log(data);
-                        resolve(data);
-                    });
+                .then(resp => {
+                    const rep = resp.json();
+                    return rep;
+                })
+                .then(data => {
+                    resolve(data);
+                });
             }
         })
     }
 
-    createRepo(repoData) {
-        console.log(repoData);
-        const { name, description } = repoData;
+    // createRepo(repoData) {
+    //     const { name, description } = repoData;
 
-        return new Promise((resolve, reject) => {
-            if (typeof name !== 'string' || typeof description !== 'string') {
-                console.log('kurwa');
-                reject(new Error('Invalid arguments passed'));
-            } else {
-                console.log('czemu');
-                const url = `${this.url}user/repos`
-    
-                fetch(url, {
-                    method: 'POST',
-                    header: {
-                        Accept: 'application/api.github.v3+json',
-                        Authorization: `token ${this.token}`
-                    },
-                    body: {
-                        name: `${name}`,
-                        description: `${description}`
-                    }
-                })
-                    .then(resp => {
-                        const rep = resp.json();
-                        console.log('resp.json(): ', rep);
-                        return rep;
-                    })
-                    .then(data => {
-                        console.log(data);
-                        resolve(data);
-                    });
-            }
-        })
-    }
+    //     return new Promise((resolve, reject) => {
+    //         if (typeof name !== 'string' || typeof description !== 'string') {
+    //             reject(new Error('Invalid arguments passed'));
+    //         } else {
+    //             const url = `${this.url}user/repos`;
+    //             const obj = {
+    //                     name: `${name}`,
+    //                     description: `${description}`
+    //                 };
+
+    //             fetch(url, {
+    //                 method: 'POST',
+    //                 headers: {
+    //                     Accept: 'application/api.github.v3+json',
+    //                     Authorization: `token ${this.token}`
+    //                 },
+    //                 body: JSON.stringify(obj)
+    //             })
+    //                 .then(resp => {
+    //                     const rep = resp.json();
+    //                     console.log('resp.json(): ', rep);
+    //                     return rep;
+    //                 })
+    //                 .then(data => {
+    //                     resolve(data);
+    //                 });
+    //         }
+    //     })
+    // }
 
     checkIfValidData(url, login, token) {
         if (url === undefined || login === undefined || token == undefined) {

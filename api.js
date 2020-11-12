@@ -7,17 +7,18 @@ import { myData, newRepoData } from './src/_token.js'
 
 window.addEventListener('DOMContentLoaded', createUserInstance);
 
-async function createUserInstance() {
+function createUserInstance() {
     const sdk = new GitHubSDK(myData);
 
-    const data = await sdk.getUserData();
-    const repos = await sdk.getPublicRepos();
-    const toggleRespond = await sdk.toggleRepoPrivacy('sketchpad', true);
-    sdk.createRepo(newRepoData);
+    // const data = await sdk.getUserData();
+    // const repos = await sdk.getPublicRepos();
+    // const toggleRespond = sdk.toggleRepoPrivacy('sketchpad', false).then(resp => console.log(resp));
+    // sdk.createRepo(newRepoData);
 
-    populateUserInfo(data);
-    updateRepositoriesView(repos);
-}
+    // populateUserInfo(data);
+    // updateRepositoriesView(repos);
+};
+
 function populateUserInfo(data) {
     const { avatar_url, html_url, hireable, bio, login } = data;
     const imgAvatar = document.querySelector('.user_avatar');
@@ -31,7 +32,8 @@ function populateUserInfo(data) {
     imgAvatar.setAttribute('src', avatar_url);
     ifUserHireable.innerText = `If hireable: ${hireable}`;
     userBio.innerText = bio;
-}
+};
+
 function updateRepositoriesView(data) {
     const protoSelector = 'repo__container-proto'
     const repoElement = document.querySelector('.' + protoSelector);
