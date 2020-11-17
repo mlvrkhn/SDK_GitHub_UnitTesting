@@ -23,12 +23,12 @@ describe('tests for GitHubSDK class', () => {
 
     describe('function getUserData()', () => {
 
-        it('expected to return login - "mlvrkhn"', async () => {
+        it('expected to return login from myData object', async () => {
             expect.assertions(1);
 
             const api = new GitHubSDK(myData);
             const res = await api.getUserData();
-            expect(res.login).toBe('mlvrkhn')
+            expect(res.login).toBe(myData.login)
         });
 
         it('throws if wrong invalid arguments passed', async () => {

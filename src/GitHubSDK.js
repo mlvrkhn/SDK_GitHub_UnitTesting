@@ -7,19 +7,20 @@ export default class GitHubSDK {
     constructor({
         url,
         login,
-        token
+        token,
+        cors
     }) {
         this.url = url;
         this.login = login;
         this.token = token;
-        this.cors_api_host = 'https://cors-anywhere.herokuapp.com/';
+        this.cors = cors;
         this._checkIfValidData(this.url, this.login, this.token);
     }
     getUserData() {
         return new Promise((resolve, reject) => {
-            const usersURLnoCors = `${this.url}users/${this.login}`;
+            const apiURL = this._getURL(false, 'users', this.login);
 
-            fetch(usersURLnoCors, {
+            fetch(apiURL, {
                     method: 'GET',
                     headers: {
                         Accept: 'application/vnd.github.v3+json',
@@ -41,13 +42,15 @@ export default class GitHubSDK {
             throw new Error('Invalid arguments!')
         } else {
             return new Promise((resolve, reject) => {
-                const reposURLnoCors = `${this.url}users/${userToCheck}/repos?sort=updated&per_page=${nrOfRepos}`;
+                const reposURL = this._getURL(false, 'users', userToCheck, 'repos');
+                const query = `?sort=updated&per_page=${nrOfRepos}`
+                const finalURL = reposURL + query;
 
-                fetch(reposURLnoCors, {
+                fetch(finalURL, {
                         method: 'GET',
                         headers: {
                             Accept: 'application/vnd.github.v3+json',
-                            Authorization: `token ${this.token}`,
+                            Authorization: `token ${this.token}`
                         }
                     })
                     .then(res => {
@@ -63,7 +66,6 @@ export default class GitHubSDK {
             })
         }
     };
-
     toggleRepoPrivacy(repoName, ifPrivate) {
         return new Promise((resolve, reject) => {
 
@@ -71,9 +73,10 @@ export default class GitHubSDK {
                 reject(new Error('Invalid arguments passed'));
             } else {
                 const targetStatus = { private: `${ifPrivate}` };
-                const sketchpadURL = 'https://api.github.com/repos/mlvrkhn/sketchpad';
+                // const sketchpadURL = 'https://api.github.com/repos/mlvrkhn/sketchpad';
+                const repoURL = this._getURL(false, 'repos', this.login, repoName);
 
-                fetch(sketchpadURL, {
+                fetch(repoURL, {
                         method: 'PATCH',
                         headers: {
                             Accept: 'application/vnd.github.v3+json',
@@ -90,7 +93,6 @@ export default class GitHubSDK {
             }
         })
     }
-
     createRepo(repoData) {
         return new Promise((resolve, reject) => {
 
@@ -98,11 +100,11 @@ export default class GitHubSDK {
                 throw new Error('You did not passed new repository data')
             } else {
                 const { name, description } = repoData;
-
                 if (typeof name !== 'string' || typeof description !== 'string') {
                     reject(new Error('Invalid arguments passed'));
                 } else {
-                    const url = `${this.url}user/repos`;
+                    // const url = `${this.url}user/repos`;
+                    const url = this._getURL(false, 'user', 'repos')
                     const obj = {
                         name: `${name}`,
                         description: `${description}`
@@ -135,22 +137,6 @@ export default class GitHubSDK {
             return;
         }
     }
-
-    _populateUserInfo(data) {
-        const { avatar_url, html_url, hireable, bio, login } = data;
-        const imgAvatar = document.querySelector('.user_avatar');
-        const userLogin = document.querySelector('.user_login');
-        const userWebsite = document.querySelector('.user_homepage');
-        const ifUserHireable = document.querySelector('.user_hireable');
-        const userBio = document.querySelector('.user_bio');
-        
-        userLogin.innerText = login;
-        userWebsite.innerText = html_url.slice(8);
-        imgAvatar.setAttribute('src', avatar_url);
-        ifUserHireable.innerText = `If hireable: ${hireable}`;
-        userBio.innerText = bio;
-    };
-
     _updateRepositoriesView(data) {
         const protoSelector = 'repo__container-proto'
         const repoElement = document.querySelector('.' + protoSelector);
@@ -170,7 +156,7 @@ export default class GitHubSDK {
             const parent = repoElement.parentNode;
 
             repoTitle.textContent = `Name: ${name}`;
-            repoHTML.textContent = `WWW: ${html_url}`;
+            repoHTML.textContent = `${html_url}`;
             repoHTML.setAttribute('href', html_url)
             repoCreatedAt.textContent = `Created at: ${created}`;
             repoUpdatedAt.textContent = `Updated at: ${updated}`;
@@ -179,4 +165,13 @@ export default class GitHubSDK {
             parent.appendChild(newElement);
         });
     }
+    _getURL(ifcors, prefix, prop, val = '') {
+        let apiURL = path.join(this.url, prefix, prop, val);
+
+        if (!ifcors) {
+            return apiURL
+        } else {
+            return this.cors + apiURL;
+        }
+    };
 };
