@@ -20,7 +20,7 @@ export default class GitHubSDK {
         return new Promise((resolve, reject) => {
             const apiURL = this._getURL(false, 'users', this.login);
 
-            fetch(apiURL, {
+            fetch('https://api.github.com/users/mlvrkhn', {
                     method: 'GET',
                     headers: {
                         Accept: 'application/vnd.github.v3+json',
@@ -37,9 +37,13 @@ export default class GitHubSDK {
                 .catch(err => console.log(err));
         })
     };
-    getPublicRepos(userToCheck = this.login, nrOfRepos = 5) {
+    getPublicRepos(userToCheck = this.login, nrOfRepos = 4) {
         if (typeof userToCheck !== 'string' || typeof nrOfRepos !== 'number') {
-            throw new Error('Invalid arguments!')
+            if (nrOfRepos < 1) {
+                throw new Error('Number of repos must be minimum 1')
+            } else {
+                throw new Error('Invalid arguments!')
+            }
         } else {
             return new Promise((resolve, reject) => {
                 const reposURL = this._getURL(false, 'users', userToCheck, 'repos');
@@ -73,7 +77,6 @@ export default class GitHubSDK {
                 reject(new Error('Invalid arguments passed'));
             } else {
                 const targetStatus = { private: `${ifPrivate}` };
-                // const sketchpadURL = 'https://api.github.com/repos/mlvrkhn/sketchpad';
                 const repoURL = this._getURL(false, 'repos', this.login, repoName);
 
                 fetch(repoURL, {
@@ -103,11 +106,11 @@ export default class GitHubSDK {
                 if (typeof name !== 'string' || typeof description !== 'string') {
                     reject(new Error('Invalid arguments passed'));
                 } else {
-                    // const url = `${this.url}user/repos`;
                     const url = this._getURL(false, 'user', 'repos')
                     const obj = {
                         name: `${name}`,
-                        description: `${description}`
+                        description: `${description}`,
+                        private: true
                     };
 
                     fetch(url, {
@@ -165,13 +168,28 @@ export default class GitHubSDK {
             parent.appendChild(newElement);
         });
     }
-    _getURL(ifcors, prefix, prop, val = '') {
-        let apiURL = path.join(this.url, prefix, prop, val);
+    _getURL(ifcors = false, prefix, prop, val = '') {
+        let apiURL = path.join(prefix, prop, val);
 
         if (!ifcors) {
-            return apiURL
+            return this.url + apiURL
         } else {
-            return this.cors + apiURL;
+            return this.cors + this.url + apiURL;
         }
     };
+    _deleteRepo(repoName) {
+        const deleteURL = this._getURL(false, 'repos', this.login, repoName);
+
+        // const body = {
+        //     name: repoName
+        // }
+        fetch(deleteURL, {
+                method: 'DELETE',
+                headers: {
+                    Accept: 'application/vnd.github.v3+json',
+                    Authorization: `token ${this.token}`
+                }
+        })
+        .then(resp => console.log(resp));
+    }
 };

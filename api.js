@@ -7,19 +7,16 @@ function createUserInstance() {
     const sdk = new GitHubSDK(myData);
 
     sdk.getUserData().then(data => {
-        populateUserInfo(data);
+        _populateUserInfo(data);
     });
 
     sdk.getPublicRepos().then(resp => {
         sdk._updateRepositoriesView(resp);
     });
-    
-    // toggling privacy and creating new repo are commented not to hit the API all the time
-    // const toggleRespond = sdk.toggleRepoPrivacy('sketchpad', false);
-    // sdk.createRepo(newRepoData);
+    sdk._deleteRepo('fakeRepo');
 };
 
-function populateUserInfo(data) {
+function _populateUserInfo(data) {
         const { avatar_url, html_url, hireable, bio, login } = data;
         const imgAvatar = document.querySelector('.user_avatar');
         const userLogin = document.querySelector('.user_login');

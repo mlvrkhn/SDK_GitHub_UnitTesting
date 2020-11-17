@@ -1,5 +1,5 @@
 import GitHubSDK from './src/GitHubSDK';
-import { myData } from './src/_token';
+import { myData, newRepoData } from './src/_token';
 
 import {
     expect
@@ -25,7 +25,6 @@ describe('tests for GitHubSDK class', () => {
 
         it('expected to return login from myData object', async () => {
             expect.assertions(1);
-
             const api = new GitHubSDK(myData);
             const res = await api.getUserData();
             expect(res.login).toBe(myData.login)
@@ -67,12 +66,13 @@ describe('tests for GitHubSDK class', () => {
             return expect(repos.length).toBe(2);
         });
 
-        it('will throw if undefined is passed into method', async () => {
+        it('will throw if login is not a string', async () => {
             expect.assertions(1);
             try {
-                await sdk.getPublicRepos([], 2);
+                const api = new GitHubSDK(myData);
+                await api.getPublicRepos([], 'string2');
             } catch (e) {
-                expect(e).toEqual(ReferenceError('sdk is not defined'))
+                expect(e).toEqual(Error('Invalid arguments!'))
             }
         });
     })
@@ -107,10 +107,22 @@ describe('tests for GitHubSDK class', () => {
             try {
                 const sdk = new GitHubSDK(myData);
                 await sdk.toggleRepoPrivacy('sketchpad', true).then(resp => {
-                    expect(resp.owner.login).toEqual('mlvrkhn')});
+                    expect(resp.owner.login).toEqual(myData.login)});
             } catch (error) {
                 console.log(error);
             }
+        });
+
+        it('checks if public repo becomes private after running toggleRepoPrivacy()', () => {
+            expect.assertions(1);
+
+            // create new repo
+
+            // toggle status
+
+            // check if status if correct with expect()
+
+            // delete the repo
         });
     })
 
@@ -148,6 +160,22 @@ describe('tests for GitHubSDK class', () => {
                 expect(error).toEqual(Error('Invalid arguments passed'))
             }
         });
-    });
 
+        it('checks if new fakeRepo was created', async () => {
+            expect.assertions(1);
+
+            const git = new GitHubSDK(myData);
+            const newRepo = await git.createRepo(newRepoData);
+            expect(newRepo.name).toEqual('fakeRepo');
+        });
+
+        it('throws with message if the repo already exists', async () => {
+            expect.assertions(1);
+
+            const git = new GitHubSDK(myData);
+            const newRepo = await git.createRepo(newRepoData);
+            expect(newRepo.message).toEqual('Repository creation failed.');
+        });
+        
+    });
 });
