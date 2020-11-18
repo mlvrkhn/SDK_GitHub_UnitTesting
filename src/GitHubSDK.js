@@ -180,8 +180,6 @@ export default class GitHubSDK {
     };
     deleteRepo(repoName) {
         const deleteURL = this._getURL(false, 'repos', this.login, repoName);
-        console.log("GitHubSDK -> _deleteRepo -> deleteURL", deleteURL)
-
         fetch(deleteURL, {
                 method: 'DELETE',
                 headers: {

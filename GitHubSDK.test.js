@@ -1,5 +1,5 @@
 import GitHubSDK from './src/GitHubSDK';
-import { myData, newRepoData } from './src/_token';
+import { myData, newRepoData, toggleRepoData } from './src/_token';
 
 import {
     expect
@@ -113,16 +113,18 @@ describe('tests for GitHubSDK class', () => {
             }
         });
 
-        it('checks if public repo becomes private after running toggleRepoPrivacy()', () => {
+        it('checks if public repo becomes private after running toggleRepoPrivacy()', async () => {
             expect.assertions(1);
 
-            // create new repo
-
-            // toggle status
-
-            // check if status if correct with expect()
-
-            // delete the repo
+            try {
+                const git = new GitHubSDK(myData);
+                const newRepo = await git.createRepo(toggleRepoData)
+                const toggler = await git.toggleRepoPrivacy('toggletest', true);
+                expect(toggler.private).toBe(true);
+                git.deleteRepo('toggletest');
+            } catch (error) {
+                console.log(error);
+            }
         });
     })
 
@@ -166,18 +168,16 @@ describe('tests for GitHubSDK class', () => {
 
         //     const git = new GitHubSDK(myData);
         //     const newRepo = await git.createRepo(newRepoData);
-        //     console.log("newRepo", newRepo)
         //     expect(newRepo.name).toEqual('fakeRepo');
         //     git.deleteRepo('fakeRepo');
         // });
 
-        it('throws with message if the repo already exists', async () => {
-            expect.assertions(1);
+        // it('throws with message if the repo already exists', async () => {
+        //     expect.assertions(1);
 
-            const git = new GitHubSDK(myData);
-            const newRepo = await git.createRepo(newRepoData);
-            expect(newRepo.message).toEqual('Repository creation failed.');
-        });
-        
+        //     const git = new GitHubSDK(myData);
+        //     const newRepo = await git.createRepo(newRepoData);
+        //     expect(newRepo.message).toEqual('Repository creation failed.');
+        // });
     });
 });
