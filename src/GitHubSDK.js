@@ -122,12 +122,13 @@ export default class GitHubSDK {
                             body: JSON.stringify(obj)
                         })
                         .then(resp => {
-                            const rep = resp.json();
-                            return rep;
+                            resolve(resp.json());
+                            // const rep = resp.json();
+                            // return rep;
                         })
-                        .then(data => {
-                            resolve(data);
-                        });
+                        // .then(data => {
+                        //     resolve(data);
+                        // });
                 }
             }
         })
@@ -140,7 +141,7 @@ export default class GitHubSDK {
             return;
         }
     }
-    _updateRepositoriesView(data) {
+    updateRepositoriesView(data) {
         const protoSelector = 'repo__container-proto'
         const repoElement = document.querySelector('.' + protoSelector);
 
@@ -177,12 +178,10 @@ export default class GitHubSDK {
             return this.cors + this.url + apiURL;
         }
     };
-    _deleteRepo(repoName) {
+    deleteRepo(repoName) {
         const deleteURL = this._getURL(false, 'repos', this.login, repoName);
+        console.log("GitHubSDK -> _deleteRepo -> deleteURL", deleteURL)
 
-        // const body = {
-        //     name: repoName
-        // }
         fetch(deleteURL, {
                 method: 'DELETE',
                 headers: {
@@ -190,6 +189,7 @@ export default class GitHubSDK {
                     Authorization: `token ${this.token}`
                 }
         })
-        .then(resp => console.log(resp));
+        .then(resp => console.log(resp))
+        .catch(err => console.log(err))
     }
 };

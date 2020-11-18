@@ -11,9 +11,15 @@ function createUserInstance() {
     });
 
     sdk.getPublicRepos().then(resp => {
-        sdk._updateRepositoriesView(resp);
+        sdk.updateRepositoriesView(resp);
     });
-    sdk._deleteRepo('fakeRepo');
+
+    // create repo
+    // sdk.createRepo(newRepoData)
+    //     .then(resp => console.log('repo created: ', resp));
+
+    // delete repo    
+    // sdk.deleteRepo('fakeRepo');
 };
 
 function _populateUserInfo(data) {
