@@ -96,7 +96,7 @@ export default class GitHubSDK {
                     Authorization: `token ${this.token}`
                 }
         }
-        return this._fetch(url, options);
+        return this._fetch(url, options).catch(err => console.log(err));
     }
     updateRepositoriesView(repositories) {
         const protoSelector = 'repo__container-proto'
@@ -113,11 +113,11 @@ export default class GitHubSDK {
 
         element.classList.remove('repo__container-proto');
         element.querySelector('.repo__title').textContent = `Name: ${name}`;        
-        element.querySelector('.repo__html').textContent = `${html_url}`;
+        element.querySelector('.repo__html').textContent = `${html_url.slice(8)}`;
         element.querySelector('.repo__created-at').textContent = `Created at: ${created_at.slice(0, 10)}`;        
         element.querySelector('.repo__updated-at').textContent = `Updated at: ${updated_at.slice(0, 10)}`;        
         element.querySelector('.repo__description').textContent = description;
-        
+
         root.appendChild(element);
     }
     _createRepoContainer(proto) {

@@ -18,8 +18,8 @@ function createUserInstance() {
     //     .then(resp => console.log('repo created: ', resp));
 
     // delete repo
-    // sdk.deleteRepo('fakeRepo');
-    // sdk.deleteRepo('toggletest');
+    sdk.deleteRepo('fakeRepo');
+    sdk.deleteRepo('toggletest');
 };
 
 function _populateUserInfo(data) {

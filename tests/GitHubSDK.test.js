@@ -10,7 +10,7 @@ import {
 } from '@jest/globals';
 
 describe('tests for GitHubSDK class', () => {
-    
+
     describe('GitHubSDK class exitence', () => {
 
         it('checks if the instance of a GitHubSDK class is created', () => {
@@ -123,7 +123,9 @@ describe('tests for GitHubSDK class', () => {
                 const newRepo = await git.createRepo(toggleRepoData)
                 const toggler = await git.toggleRepoPrivacy('toggletest', true);
                 expect(toggler.private).toBe(true);
-                await git.deleteRepo('toggletest');
+
+                await git.deleteRepo('toggletest').then(p => console.log(p));
+
             } catch (error) {
                 console.log(error);
             }
