@@ -1,11 +1,16 @@
-import GitHubSDK from './src/GitHubSDK';
-import { myData, newRepoData, toggleRepoData } from './src/_token';
+import GitHubSDK from '../src/GitHubSDK';
+import {
+    myData,
+    newRepoData,
+    toggleRepoData
+} from '../src/_token';
 
 import {
     expect
 } from '@jest/globals';
 
 describe('tests for GitHubSDK class', () => {
+    
     describe('GitHubSDK class exitence', () => {
 
         it('checks if the instance of a GitHubSDK class is created', () => {
@@ -23,7 +28,7 @@ describe('tests for GitHubSDK class', () => {
 
     describe('function getUserData()', () => {
 
-        it('expected to return login from myData object', async () => {
+        it('is expected to return login from myData object', async () => {
             expect.assertions(1);
             const api = new GitHubSDK(myData);
             const res = await api.getUserData();
@@ -32,20 +37,16 @@ describe('tests for GitHubSDK class', () => {
 
         it('throws if wrong invalid arguments passed', async () => {
             expect.assertions(1);
-
-            try {
+            
+            expect(() => {
                 const fakeData = {
-                    token: 'xzy',
                     login: 'mlvrkhn',
-                    url: 'https://api.github.com/users/'
+                    token: 123456
                 }
                 const api = new GitHubSDK(fakeData);
-                const res = await api.getUserData();
-            } catch (error) {
-                expect(error).toEqual(Error('HTTP Error'))
-            }
+            }).toThrow();
+            
         })
-    })
 
     describe('function getPublicRepos()', () => {
 
@@ -81,7 +82,7 @@ describe('tests for GitHubSDK class', () => {
 
         it('throws if args are not passed', async () => {
             expect.assertions(1);
-            
+
             try {
                 const sdk = new GitHubSDK(myData);
                 await sdk.toggleRepoPrivacy();
@@ -90,9 +91,9 @@ describe('tests for GitHubSDK class', () => {
             }
         });
 
-        it('throws incorrect arguments', async () => {
+        it('throws with incorrect arguments', async () => {
             expect.assertions(1);
-            
+
             try {
                 const sdk = new GitHubSDK(myData);
                 await sdk.toggleRepoPrivacy(10, 'text');
@@ -100,14 +101,15 @@ describe('tests for GitHubSDK class', () => {
                 expect(e).toEqual(Error('Invalid arguments passed'));
             }
         })
-        
+
         it('resolves with owner login equal to mlvrkhn', async () => {
             expect.assertions(1);
 
             try {
                 const sdk = new GitHubSDK(myData);
                 await sdk.toggleRepoPrivacy('sketchpad', true).then(resp => {
-                    expect(resp.owner.login).toEqual(myData.login)});
+                    expect(resp.owner.login).toEqual(myData.login)
+                });
             } catch (error) {
                 console.log(error);
             }
@@ -121,7 +123,7 @@ describe('tests for GitHubSDK class', () => {
                 const newRepo = await git.createRepo(toggleRepoData)
                 const toggler = await git.toggleRepoPrivacy('toggletest', true);
                 expect(toggler.private).toBe(true);
-                git.deleteRepo('toggletest');
+                await git.deleteRepo('toggletest');
             } catch (error) {
                 console.log(error);
             }
@@ -130,7 +132,7 @@ describe('tests for GitHubSDK class', () => {
 
     describe('function createRepo', () => {
 
-        it('throws if argument if name is not privided', async () => {
+        it('throws if argument if args are not provided', async () => {
             expect.assertions(1);
 
             try {
@@ -163,21 +165,22 @@ describe('tests for GitHubSDK class', () => {
             }
         });
 
-        // it('checks if new fakeRepo was created', async () => {
-        //     expect.assertions(1);
+        it('checks if new fakeRepo was created', async () => {
+            expect.assertions(1);
 
-        //     const git = new GitHubSDK(myData);
-        //     const newRepo = await git.createRepo(newRepoData);
-        //     expect(newRepo.name).toEqual('fakeRepo');
-        //     git.deleteRepo('fakeRepo');
-        // });
+            const git = new GitHubSDK(myData);
+            const newRepo = await git.createRepo(newRepoData);
+            expect(newRepo.name).toEqual('fakeRepo');
+            git.deleteRepo('fakeRepo');
+        });
 
-        // it('throws with message if the repo already exists', async () => {
-        //     expect.assertions(1);
+        it('throws with message if the repo already exists', async () => {
+            expect.assertions(1);
 
-        //     const git = new GitHubSDK(myData);
-        //     const newRepo = await git.createRepo(newRepoData);
-        //     expect(newRepo.message).toEqual('Repository creation failed.');
-        // });
+            const git = new GitHubSDK(myData);
+            const newRepo = await git.createRepo(newRepoData);
+            expect(newRepo.message).toEqual('Repository creation failed.');
+        });
+        });
     });
 });

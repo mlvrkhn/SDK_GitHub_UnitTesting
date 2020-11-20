@@ -9,7 +9,6 @@ function createUserInstance() {
     sdk.getUserData().then(data => {
         _populateUserInfo(data);
     });
-
     sdk.getPublicRepos().then(resp => {
         sdk.updateRepositoriesView(resp);
     });
@@ -18,8 +17,9 @@ function createUserInstance() {
     // sdk.createRepo(newRepoData)
     //     .then(resp => console.log('repo created: ', resp));
 
-    // delete repo    
+    // delete repo
     // sdk.deleteRepo('fakeRepo');
+    // sdk.deleteRepo('toggletest');
 };
 
 function _populateUserInfo(data) {

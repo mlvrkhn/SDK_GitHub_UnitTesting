@@ -1,42 +1,29 @@
 const path = require('path');
 const fetch = require("node-fetch");
 const regeneratorRuntime = require("regenerator-runtime");
-
-
 export default class GitHubSDK {
     constructor({
-        url,
         login,
         token,
-        cors
     }) {
-        this.url = url;
+        this.url = 'https://api.github.com/';
         this.login = login;
         this.token = token;
-        this.cors = cors;
+        this.cors = 'https://cors-anywhere.herokuapp.com/';
         this._checkIfValidData(this.url, this.login, this.token);
     }
     getUserData() {
-        return new Promise((resolve, reject) => {
             const apiURL = this._getURL(false, 'users', this.login);
-
-            fetch('https://api.github.com/users/mlvrkhn', {
-                    method: 'GET',
-                    headers: {
-                        Accept: 'application/vnd.github.v3+json',
-                        Authorization: `token ${this.token}`
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        reject(new Error(`HTTP Error`));
-                    } else {
-                        resolve(response.json());
-                    }
-                })
-                .catch(err => console.log(err));
-        })
+            const options = {
+                method: 'GET', 
+                headers: {
+                    Accept: 'application/vnd.github.v3+json',
+                    Authorization: `token ${this.token}`
+                }
+            };
+            return this._fetch(apiURL, options);
     };
+
     getPublicRepos(userToCheck = this.login, nrOfRepos = 4) {
         if (typeof userToCheck !== 'string' || typeof nrOfRepos !== 'number') {
             if (nrOfRepos < 1) {
@@ -45,102 +32,76 @@ export default class GitHubSDK {
                 throw new Error('Invalid arguments!')
             }
         } else {
-            return new Promise((resolve, reject) => {
-                const reposURL = this._getURL(false, 'users', userToCheck, 'repos');
-                const query = `?sort=updated&per_page=${nrOfRepos}`
-                const finalURL = reposURL + query;
-
-                fetch(finalURL, {
-                        method: 'GET',
-                        headers: {
-                            Accept: 'application/vnd.github.v3+json',
-                            Authorization: `token ${this.token}`
-                        }
-                    })
-                    .then(res => {
-                        if (!res.ok) {
-                            reject(new Error('Fetching unsuccessfull'));
-                        } else {
-                            resolve(res.json())
-                        }
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    })
-            })
-        }
-    };
-    toggleRepoPrivacy(repoName, ifPrivate) {
-        return new Promise((resolve, reject) => {
-
-            if (typeof repoName !== 'string' || typeof ifPrivate !== 'boolean') {
-                reject(new Error('Invalid arguments passed'));
-            } else {
-                const targetStatus = { private: `${ifPrivate}` };
-                const repoURL = this._getURL(false, 'repos', this.login, repoName);
-
-                fetch(repoURL, {
-                        method: 'PATCH',
-                        headers: {
-                            Accept: 'application/vnd.github.v3+json',
-                            Authorization: `token ${this.token}`
-                        },
-                        body: JSON.stringify(targetStatus)
-                    })
-                    .then(resp => {
-                        return resp.json();
-                    })
-                    .then(data => {
-                        resolve(data);
-                    });
-            }
-        })
-    }
-    createRepo(repoData) {
-        return new Promise((resolve, reject) => {
-
-            if (!repoData) {
-                throw new Error('You did not passed new repository data')
-            } else {
-                const { name, description } = repoData;
-                if (typeof name !== 'string' || typeof description !== 'string') {
-                    reject(new Error('Invalid arguments passed'));
-                } else {
-                    const url = this._getURL(false, 'user', 'repos')
-                    const obj = {
-                        name: `${name}`,
-                        description: `${description}`,
-                        private: true
-                    };
-
-                    fetch(url, {
-                            method: 'POST',
-                            headers: {
-                                Accept: 'application/vnd.github.v3+json',
-                                Authorization: `token ${this.token}`
-                            },
-                            body: JSON.stringify(obj)
-                        })
-                        .then(resp => {
-                            resolve(resp.json());
-                            // const rep = resp.json();
-                            // return rep;
-                        })
-                        // .then(data => {
-                        //     resolve(data);
-                        // });
+            const reposURL = this._getURL(false, 'users', userToCheck, 'repos');
+            const query = `?sort=updated&per_page=${nrOfRepos}`
+            const url = reposURL + query;
+            const options = {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/vnd.github.v3+json',
+                    Authorization: `token ${this.token}`
                 }
             }
-        })
-    }
+            return this._fetch(url, options);
+        }
+    };
 
-    _checkIfValidData(url, login, token) {
-        if (url === undefined || login === undefined || token == undefined) {
-            throw new Error('Missing parameters in instance creation')
+    toggleRepoPrivacy(repoName, ifPrivate) {
+        if (typeof repoName !== 'string' || typeof ifPrivate !== 'boolean') {
+            throw new Error('Invalid arguments passed');
         } else {
-            return;
+            const targetStatus = { private: `${ifPrivate}` };
+            const repoURL = this._getURL(false, 'repos', this.login, repoName);
+            const options = {
+                method: 'PATCH',
+                    headers: {
+                        Accept: 'application/vnd.github.v3+json',
+                        Authorization: `token ${this.token}`
+                    },
+                    body: JSON.stringify(targetStatus)
+            }
+            return this._fetch(repoURL, options);
         }
     }
+    createRepo(repoData) {
+        if (!repoData) {
+            throw new Error('You did not passed new repository data')
+        } else {
+            const { name, description } = repoData;
+            if (typeof name !== 'string' || typeof description !== 'string') {
+                throw new Error('Invalid arguments passed');
+            } else {
+                const url = this._getURL(false, 'user', 'repos')
+                const body = {
+                    name: `${name}`,
+                    description: `${description}`,
+                    private: true
+                };
+                const options = {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/vnd.github.v3+json',
+                        Authorization: `token ${this.token}`
+                    },
+                    body: JSON.stringify(body)
+                }
+                return this._fetch(url, options)
+            }
+        }
+    }
+
+    deleteRepo(repoName) {
+        const url = this._getURL(false, 'repos', this.login, repoName);
+        const options = {
+            method: 'DELETE',
+                headers: {
+                    Accept: 'application/vnd.github.v3+json',
+                    Authorization: `token ${this.token}`
+                }
+        }
+        return this._fetch(url, options);
+    }
+
     updateRepositoriesView(data) {
         const protoSelector = 'repo__container-proto'
         const repoElement = document.querySelector('.' + protoSelector);
@@ -169,6 +130,15 @@ export default class GitHubSDK {
             parent.appendChild(newElement);
         });
     }
+
+    _checkIfValidData(url, login, token) {
+        if (url === undefined || login === undefined || token == undefined || typeof token !== 'string') {
+            throw new Error('Missing parameters in instance creation')
+        } else {
+            return;
+        }
+    }
+
     _getURL(ifcors = false, prefix, prop, val = '') {
         let apiURL = path.join(prefix, prop, val);
 
@@ -178,16 +148,9 @@ export default class GitHubSDK {
             return this.cors + this.url + apiURL;
         }
     };
-    deleteRepo(repoName) {
-        const deleteURL = this._getURL(false, 'repos', this.login, repoName);
-        fetch(deleteURL, {
-                method: 'DELETE',
-                headers: {
-                    Accept: 'application/vnd.github.v3+json',
-                    Authorization: `token ${this.token}`
-                }
-        })
-        .then(resp => console.log(resp))
-        .catch(err => console.log(err))
-    }
+
+    _fetch(url, options) {
+        return fetch(url, options)
+            .then(res => (!res.ok) ? Promise.reject(res) : res.json());
+    };
 };
