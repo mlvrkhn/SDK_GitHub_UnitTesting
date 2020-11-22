@@ -96,7 +96,7 @@ export default class GitHubSDK {
                     Authorization: `token ${this.token}`
                 }
         }
-        return this._fetch(url, options).catch(err => console.log(err));
+        return this._fetch(url, options).catch(err => console.log(`Error ${err} at url address: ${url}`));
     }
     
     _checkIfValidData(url, login, token) {
@@ -117,6 +117,6 @@ export default class GitHubSDK {
     };
     _fetch(url, options) {
         return fetch(url, options)
-            .then(res => (!res.ok) ? Promise.reject(res) : res.json());
+            .then(res => (!res.ok) ? Promise.reject('Promise rejected in _fetch()') : res.json())
     };
 };

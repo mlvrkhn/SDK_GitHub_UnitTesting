@@ -2,7 +2,9 @@ import GitHubSDK from '../src/GitHubSDK';
 import {
     myData,
     newRepoData,
-    toggleRepoData
+    toggleRepoData,
+    fakeCreateRepo,
+    fakeDuplicateRepo
 } from '../src/_token';
 
 import {
@@ -120,15 +122,27 @@ describe('tests for GitHubSDK class', () => {
 
             try {
                 const git = new GitHubSDK(myData);
-                const newRepo = await git.createRepo(toggleRepoData)
-                const toggler = await git.toggleRepoPrivacy('toggletest', true);
-                expect(toggler.private).toBe(true);
-
-                await git.deleteRepo('toggletest').then(p => console.log(p));
-
-            } catch (error) {
-                console.log(error);
+                const resp = await git.createRepo(toggleRepoData);
+                const tgl = await git.toggleRepoPrivacy('toggletest', false);
+                expect(tgl.private).toBe(false);
+                await git.deleteRepo('toggletest');
+                    // .then(resp => {
+                    //     expect(resp.private).toBe(false);
+                    // })
+                    // .then(git.deleteRepo('toggletest'));
+            } catch (err) {
+                console.log('toggler error: ', err);
             }
+
+            // try {
+            //     const git = new GitHubSDK(myData);
+            //     await git.createRepo(toggleRepoData).then(git.toggleRepoPrivacy('toggletest', true).then(toggler => expect(toggler.private).toBe(true)))
+            //     git.deleteRepo('toggletest').then(p => console.log(p));
+
+            // } catch (error) {
+            //     console.log(error);
+            // }
+            
         });
     })
 
@@ -171,18 +185,21 @@ describe('tests for GitHubSDK class', () => {
         //     expect.assertions(1);
 
         //     const git = new GitHubSDK(myData);
-        //     const newRepo = await git.createRepo(newRepoData);
-        //     expect(newRepo.name).toEqual('fakeRepo');
-        //     await git.deleteRepo('fakeRepo');
+
+        //     await git.createRepo(fakeCreateRepo)
+        //         .then(resp => {
+        //             expect(resp.name).toEqual('fake-repo')})
+        //         .then(git.deleteRepo('fake-repo'))
+        //         .catch(err => console.log(err));
         // });
 
         // it('throws with message if the repo already exists', async () => {
         //     expect.assertions(1);
 
         //     const git = new GitHubSDK(myData);
-        //     const newRepo = await git.createRepo(newRepoData);
-        //     expect(newRepo.message).toEqual('Repository creation failed.');
-        //     await git.deleteRepo('fakeRepo');
+        //     const newRepo = await git.createRepo(fakeDuplicateRepo)
+        //         .then(expect(newRepo.message).toEqual('Repository creation failed.'))
+        //         .then(await git.deleteRepo('duplicate-fake-repo'));
         // });
 
         });
