@@ -49,6 +49,7 @@ describe('tests for GitHubSDK class', () => {
             }).toThrow();
             
         })
+    });
 
     describe('function getPublicRepos()', () => {
 
@@ -180,22 +181,18 @@ describe('tests for GitHubSDK class', () => {
             }
         });
 
+        it('throws with message if the repo already exists', async () => {
+            expect.assertions(1);
 
-        // const git = new GitHubSDK(myData);
-        // const resp = await git.createRepo(toggleRepoData);
-        // const tgl = await git.toggleRepoPrivacy('toggletest', false);
-        // expect(tgl.private).toBe(false);
-        // await git.deleteRepo('toggletest');
-
-        // it('throws with message if the repo already exists', async () => {
-        //     expect.assertions(1);
-
-        //     const git = new GitHubSDK(myData);
-        //     const newRepo = await git.createRepo(fakeDuplicateRepo)
-        //         .then(expect(newRepo.message).toEqual('Repository creation failed.'))
-        //         .then(await git.deleteRepo('duplicate-fake-repo'));
-        // });
-
+            const git = new GitHubSDK(myData);
+            try {
+                await git.createRepo(fakeDuplicateRepo).then(async () => {
+                    await git.createRepo(fakeDuplicateRepo);
+                });
+            } catch (error) {
+                expect(error).toEqual('Promise rejected in _fetch()');
+            }
+            await git.deleteRepo('duplicate-fake-repo');
         });
     });
 });
