@@ -167,22 +167,24 @@ describe('tests for GitHubSDK class', () => {
             }
         });
 
-        it('checks if new fakeRepo was created', async () => {
-            expect.assertions(1);
+        // it('checks if new fakeRepo was created', async () => {
+        //     expect.assertions(1);
 
-            const git = new GitHubSDK(myData);
-            const newRepo = await git.createRepo(newRepoData);
-            expect(newRepo.name).toEqual('fakeRepo');
-            git.deleteRepo('fakeRepo');
-        });
+        //     const git = new GitHubSDK(myData);
+        //     const newRepo = await git.createRepo(newRepoData);
+        //     expect(newRepo.name).toEqual('fakeRepo');
+        //     await git.deleteRepo('fakeRepo');
+        // });
 
-        it('throws with message if the repo already exists', async () => {
-            expect.assertions(1);
+        // it('throws with message if the repo already exists', async () => {
+        //     expect.assertions(1);
 
-            const git = new GitHubSDK(myData);
-            const newRepo = await git.createRepo(newRepoData);
-            expect(newRepo.message).toEqual('Repository creation failed.');
-        });
+        //     const git = new GitHubSDK(myData);
+        //     const newRepo = await git.createRepo(newRepoData);
+        //     expect(newRepo.message).toEqual('Repository creation failed.');
+        //     await git.deleteRepo('fakeRepo');
+        // });
+
         });
     });
 });

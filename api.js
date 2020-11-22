@@ -10,7 +10,7 @@ function createUserInstance() {
         _populateUserInfo(data);
     });
     sdk.getPublicRepos().then(resp => {
-        sdk.updateRepositoriesView(resp);
+        _updateRepositoriesView(resp);
     });
 
     // create repo
@@ -18,8 +18,8 @@ function createUserInstance() {
     //     .then(resp => console.log('repo created: ', resp));
 
     // delete repo
-    sdk.deleteRepo('fakeRepo');
-    sdk.deleteRepo('toggletest');
+    // sdk.deleteRepo('fakeRepo');
+    // sdk.deleteRepo('toggletest');
 };
 
 function _populateUserInfo(data) {
@@ -36,3 +36,31 @@ function _populateUserInfo(data) {
         ifUserHireable.innerText = `If hireable: ${hireable}`;
         userBio.innerText = bio;
 };
+
+function _updateRepositoriesView(repositories) {
+    const protoSelector = 'repo__container-proto'
+    const repoElement = document.querySelector('.' + protoSelector);
+    const parent = repoElement.parentNode;
+
+    repositories.forEach(repo => {
+        const repoDOMElement = _createRepoContainer(repoElement);
+        _populateRepoData(repoDOMElement, repo, parent)
+    });
+}
+
+function _populateRepoData(element, data, root) {
+    const {name, created_at, updated_at, html_url, description} = data;
+
+    element.classList.remove('repo__container-proto');
+    element.querySelector('.repo__title').textContent = `Name: ${name}`;        
+    element.querySelector('.repo__html').textContent = `${html_url.slice(8)}`;
+    element.querySelector('.repo__created-at').textContent = `Created at: ${created_at.slice(0, 10)}`;        
+    element.querySelector('.repo__updated-at').textContent = `Updated at: ${updated_at.slice(0, 10)}`;        
+    element.querySelector('.repo__description').textContent = description;
+
+    root.appendChild(element);
+}
+
+function _createRepoContainer(proto) {
+    return proto.cloneNode(true);
+}

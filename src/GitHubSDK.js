@@ -98,31 +98,7 @@ export default class GitHubSDK {
         }
         return this._fetch(url, options).catch(err => console.log(err));
     }
-    updateRepositoriesView(repositories) {
-        const protoSelector = 'repo__container-proto'
-        const repoElement = document.querySelector('.' + protoSelector);
-        const parent = repoElement.parentNode;
-
-        repositories.forEach(repo => {
-            const repoDOMElement = this._createRepoContainer(repoElement);
-            this._populateRepoData(repoDOMElement, repo, parent)
-        });
-    }
-    _populateRepoData(element, data, root) {
-        const {name, created_at, updated_at, html_url, description} = data;
-
-        element.classList.remove('repo__container-proto');
-        element.querySelector('.repo__title').textContent = `Name: ${name}`;        
-        element.querySelector('.repo__html').textContent = `${html_url.slice(8)}`;
-        element.querySelector('.repo__created-at').textContent = `Created at: ${created_at.slice(0, 10)}`;        
-        element.querySelector('.repo__updated-at').textContent = `Updated at: ${updated_at.slice(0, 10)}`;        
-        element.querySelector('.repo__description').textContent = description;
-
-        root.appendChild(element);
-    }
-    _createRepoContainer(proto) {
-        return proto.cloneNode(true);
-    }
+    
     _checkIfValidData(url, login, token) {
         if (url === undefined || login === undefined || token == undefined || typeof token !== 'string') {
             throw new Error('Missing parameters in instance creation')
