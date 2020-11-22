@@ -126,23 +126,9 @@ describe('tests for GitHubSDK class', () => {
                 const tgl = await git.toggleRepoPrivacy('toggletest', false);
                 expect(tgl.private).toBe(false);
                 await git.deleteRepo('toggletest');
-                    // .then(resp => {
-                    //     expect(resp.private).toBe(false);
-                    // })
-                    // .then(git.deleteRepo('toggletest'));
             } catch (err) {
                 console.log('toggler error: ', err);
             }
-
-            // try {
-            //     const git = new GitHubSDK(myData);
-            //     await git.createRepo(toggleRepoData).then(git.toggleRepoPrivacy('toggletest', true).then(toggler => expect(toggler.private).toBe(true)))
-            //     git.deleteRepo('toggletest').then(p => console.log(p));
-
-            // } catch (error) {
-            //     console.log(error);
-            // }
-            
         });
     })
 
@@ -181,17 +167,25 @@ describe('tests for GitHubSDK class', () => {
             }
         });
 
-        // it('checks if new fakeRepo was created', async () => {
-        //     expect.assertions(1);
+        it('checks if new fakeRepo was created', async () => {
+            expect.assertions(1);
 
-        //     const git = new GitHubSDK(myData);
+            try {
+                const api = new GitHubSDK(myData);
+                const newRepo = await api.createRepo(fakeCreateRepo);
+                expect(newRepo.created_at).toBeTruthy();
+                await api.deleteRepo('fake-repo');
+            } catch (error) {
+                console.log('fakeRepo error: ', error);
+            }
+        });
 
-        //     await git.createRepo(fakeCreateRepo)
-        //         .then(resp => {
-        //             expect(resp.name).toEqual('fake-repo')})
-        //         .then(git.deleteRepo('fake-repo'))
-        //         .catch(err => console.log(err));
-        // });
+
+        // const git = new GitHubSDK(myData);
+        // const resp = await git.createRepo(toggleRepoData);
+        // const tgl = await git.toggleRepoPrivacy('toggletest', false);
+        // expect(tgl.private).toBe(false);
+        // await git.deleteRepo('toggletest');
 
         // it('throws with message if the repo already exists', async () => {
         //     expect.assertions(1);
