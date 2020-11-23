@@ -1,15 +1,9 @@
 import GitHubSDK from '../src/GitHubSDK';
-import {
-    myData,
-    newRepoData,
-    toggleRepoData,
-    fakeCreateRepo,
-    fakeDuplicateRepo
-} from '../src/_token';
+import { myData, toggleRepoData, fakeCreateRepo, fakeDuplicateRepo} from '../src/_token';
+import { expect } from '@jest/globals';
 
-import {
-    expect
-} from '@jest/globals';
+const fetch = require("node-fetch");
+const regeneratorRuntime = require("regenerator-runtime");
 
 describe('tests for GitHubSDK class', () => {
 

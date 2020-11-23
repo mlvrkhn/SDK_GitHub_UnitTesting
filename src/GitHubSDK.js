@@ -1,6 +1,5 @@
 const path = require('path');
-const fetch = require("node-fetch");
-const regeneratorRuntime = require("regenerator-runtime");
+
 export default class GitHubSDK {
     constructor({
         login,
