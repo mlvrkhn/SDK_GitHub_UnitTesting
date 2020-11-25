@@ -12,7 +12,8 @@ export default class GitHubSDK {
         this._checkIfValidData(this.url, this.login, this.token);
     }
     getUserData() {
-            const apiURL = this._getURL(false, 'users', this.login);
+            const query = `users/${this.login}`
+            const apiURL = this._getURL(false, query);
             const options = {
                 method: 'GET', 
                 headers: {
@@ -30,9 +31,8 @@ export default class GitHubSDK {
                 throw new Error('Invalid arguments!')
             }
         } else {
-            const reposURL = this._getURL(false, 'users', userToCheck, 'repos');
-            const query = `?sort=updated&per_page=${nrOfRepos}`
-            const url = reposURL + query;
+            const query = `users/${userToCheck}/repos?sort=updated&per_page=${nrOfRepos}`;
+            const reposURL = this._getURL(false, query);
             const options = {
                 method: 'GET',
                 headers: {
@@ -40,7 +40,7 @@ export default class GitHubSDK {
                     Authorization: `token ${this.token}`
                 }
             }
-            return this._fetch(url, options);
+            return this._fetch(reposURL, options);
         }
     };
     toggleRepoPrivacy(repoName, ifPrivate) {
@@ -48,7 +48,8 @@ export default class GitHubSDK {
             throw new Error('Invalid arguments passed');
         } else {
             const targetStatus = { private: `${ifPrivate}` };
-            const repoURL = this._getURL(false, 'repos', this.login, repoName);
+            const query = `repos/${this.login}/${repoName}`;
+            const repoURL = this._getURL(false, query);
             const options = {
                 method: 'PATCH',
                     headers: {
@@ -68,7 +69,8 @@ export default class GitHubSDK {
             if (typeof name !== 'string' || typeof description !== 'string') {
                 throw new Error('Invalid arguments passed');
             } else {
-                const url = this._getURL(false, 'user', 'repos')
+                const query = `user/repos`;
+                const url = this._getURL(false, query);
                 const body = {
                     name: `${name}`,
                     description: `${description}`,
@@ -87,7 +89,8 @@ export default class GitHubSDK {
         }
     }
     deleteRepo(repoName) {
-        const url = this._getURL(false, 'repos', this.login, repoName);
+        const query = `repos/${this.login}/${repoName}`;
+        const url = this._getURL(false, query);
         const options = {
             method: 'DELETE',
                 headers: {
@@ -105,17 +108,17 @@ export default class GitHubSDK {
             return;
         }
     }
-    _getURL(ifcors = false, prefix, prop, val = '') {
-        let apiURL = path.join(prefix, prop, val);
-
+    _getURL(ifcors = false, query) {
         if (!ifcors) {
-            return this.url + apiURL
+            return this.url + query
         } else {
-            return this.cors + this.url + apiURL;
+            return this.cors + this.url + query;
         }
     };
     _fetch(url, options) {
         return fetch(url, options)
-            .then(res => (!res.ok) ? Promise.reject('Promise rejected in _fetch()') : res.json())
+            .then(res => (!res.ok)
+            ? Promise.reject('Promise rejected in _fetch()')
+            : res.json())
     };
 };

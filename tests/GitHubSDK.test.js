@@ -1,13 +1,14 @@
 import GitHubSDK from '../src/GitHubSDK';
-import { myData, toggleRepoData, fakeCreateRepo, fakeDuplicateRepo} from '../src/_token';
+import { myData, toggleRepoData, fakeCreateRepo, fakeDuplicateRepo, fakeTogglePrivacyRepo } from '../src/_token';
 import { expect } from '@jest/globals';
 
 const fetch = require("node-fetch");
 const regeneratorRuntime = require("regenerator-runtime");
+window.fetch = fetch;
 
 describe('tests for GitHubSDK class', () => {
 
-    describe('GitHubSDK class exitence', () => {
+    describe('GitHubSDK class eitence', () => {
 
         it('checks if the instance of a GitHubSDK class is created', () => {
             const api = new GitHubSDK(myData);
@@ -99,28 +100,16 @@ describe('tests for GitHubSDK class', () => {
             }
         })
 
-        it('resolves with owner login equal to mlvrkhn', async () => {
+        it('checks if public repo becomes public after running toggleRepoPrivacy()', async () => {
             expect.assertions(1);
-
-            try {
-                const sdk = new GitHubSDK(myData);
-                await sdk.toggleRepoPrivacy('sketchpad', true).then(resp => {
-                    expect(resp.owner.login).toEqual(myData.login)
-                });
-            } catch (error) {
-                console.log(error);
-            }
-        });
-
-        it('checks if public repo becomes private after running toggleRepoPrivacy()', async () => {
-            expect.assertions(1);
-
+            
             try {
                 const git = new GitHubSDK(myData);
-                const resp = await git.createRepo(toggleRepoData);
-                const tgl = await git.toggleRepoPrivacy('toggletest', false);
-                expect(tgl.private).toBe(false);
-                await git.deleteRepo('toggletest');
+                await git.createRepo(toggleRepoData).then(async () => {
+                    await git.toggleRepoPrivacy('toggletest', false).then(resp => {
+                        expect(resp.private).toEqual(false)
+                    })
+                }).then(async () => git.deleteRepo('toggletest'));
             } catch (err) {
                 console.log('toggler error: ', err);
             }
