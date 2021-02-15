@@ -1,10 +1,7 @@
 const path = require('path');
 
 export default class GitHubSDK {
-    constructor({
-        login,
-        token,
-    }) {
+    constructor({ login, token }) {
         this.url = 'https://api.github.com/';
         this.login = login;
         this.token = token;
@@ -12,23 +9,23 @@ export default class GitHubSDK {
         this._checkIfValidData(this.url, this.login, this.token);
     }
     getUserData() {
-            const query = `users/${this.login}`
-            const apiURL = this._getURL(false, query);
-            const options = {
-                method: 'GET', 
-                headers: {
-                    Accept: 'application/vnd.github.v3+json',
-                    Authorization: `token ${this.token}`
-                }
-            };
-            return this._fetch(apiURL, options);
-    };
+        const query = `users/${this.login}`;
+        const apiURL = this._getURL(false, query);
+        const options = {
+            method: 'GET',
+            headers: {
+                Accept: 'application/vnd.github.v3+json',
+                Authorization: `token ${this.token}`,
+            },
+        };
+        return this._fetch(apiURL, options);
+    }
     getPublicRepos(userToCheck = this.login, nrOfRepos = 4) {
         if (typeof userToCheck !== 'string' || typeof nrOfRepos !== 'number') {
             if (nrOfRepos < 1) {
-                throw new Error('Number of repos must be minimum 1')
+                throw new Error('Number of repos must be minimum 1');
             } else {
-                throw new Error('Invalid arguments!')
+                throw new Error('Invalid arguments!');
             }
         } else {
             const query = `users/${userToCheck}/repos?sort=updated&per_page=${nrOfRepos}`;
@@ -37,12 +34,12 @@ export default class GitHubSDK {
                 method: 'GET',
                 headers: {
                     Accept: 'application/vnd.github.v3+json',
-                    Authorization: `token ${this.token}`
-                }
-            }
+                    Authorization: `token ${this.token}`,
+                },
+            };
             return this._fetch(reposURL, options);
         }
-    };
+    }
     toggleRepoPrivacy(repoName, ifPrivate) {
         if (typeof repoName !== 'string' || typeof ifPrivate !== 'boolean') {
             throw new Error('Invalid arguments passed');
@@ -52,18 +49,18 @@ export default class GitHubSDK {
             const repoURL = this._getURL(false, query);
             const options = {
                 method: 'PATCH',
-                    headers: {
-                        Accept: 'application/vnd.github.v3+json',
-                        Authorization: `token ${this.token}`
-                    },
-                    body: JSON.stringify(targetStatus)
-            }
+                headers: {
+                    Accept: 'application/vnd.github.v3+json',
+                    Authorization: `token ${this.token}`,
+                },
+                body: JSON.stringify(targetStatus),
+            };
             return this._fetch(repoURL, options);
         }
     }
     createRepo(repoData) {
         if (!repoData) {
-            throw new Error('You did not passed new repository data')
+            throw new Error('You did not passed new repository data');
         } else {
             const { name, description } = repoData;
             if (typeof name !== 'string' || typeof description !== 'string') {
@@ -74,17 +71,17 @@ export default class GitHubSDK {
                 const body = {
                     name: `${name}`,
                     description: `${description}`,
-                    private: true
+                    private: true,
                 };
                 const options = {
                     method: 'POST',
                     headers: {
                         Accept: 'application/vnd.github.v3+json',
-                        Authorization: `token ${this.token}`
+                        Authorization: `token ${this.token}`,
                     },
-                    body: JSON.stringify(body)
-                }
-                return this._fetch(url, options)
+                    body: JSON.stringify(body),
+                };
+                return this._fetch(url, options);
             }
         }
     }
@@ -93,32 +90,40 @@ export default class GitHubSDK {
         const url = this._getURL(false, query);
         const options = {
             method: 'DELETE',
-                headers: {
-                    Accept: 'application/vnd.github.v3+json',
-                    Authorization: `token ${this.token}`
-                }
-        }
-        return this._fetch(url, options).catch(err => console.log(`Error ${err} at url address: ${url}`));
+            headers: {
+                Accept: 'application/vnd.github.v3+json',
+                Authorization: `token ${this.token}`,
+            },
+        };
+        return this._fetch(url, options).catch((err) =>
+            console.log(`Error ${err} at url address: ${url}`)
+        );
     }
-    
+
     _checkIfValidData(url, login, token) {
-        if (url === undefined || login === undefined || token == undefined || typeof token !== 'string') {
-            throw new Error('Missing parameters in instance creation')
+        if (
+            url === undefined ||
+            login === undefined ||
+            token == undefined ||
+            typeof token !== 'string'
+        ) {
+            throw new Error('Missing parameters in instance creation');
         } else {
             return;
         }
     }
     _getURL(ifcors = false, query) {
         if (!ifcors) {
-            return this.url + query
+            return this.url + query;
         } else {
             return this.cors + this.url + query;
         }
-    };
+    }
     _fetch(url, options) {
-        return fetch(url, options)
-            .then(res => (!res.ok)
-            ? Promise.reject('Promise rejected in _fetch()')
-            : res.json())
-    };
-};
+        return fetch(url, options).then((res) =>
+            !res.ok
+                ? Promise.reject('Promise rejected in _fetch()')
+                : res.json()
+        );
+    }
+}
