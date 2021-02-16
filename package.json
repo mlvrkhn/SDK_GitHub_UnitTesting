@@ -1,42 +1,42 @@
 {
-  "name": "github-sdk-api",
-  "version": "1.0.0",
-  "description": "API that let's you fetch data from GitHub and perform opeations on it. For example - autoupdate your portfolio.",
-  "main": "api.js",
-  "scripts": {
-    "test": "jest --watchAll",
-    "start": "webpack-dev-server --open --watch",
-    "build": "webpack --mode production"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mlvrkhn/task-js-testing.git"
-  },
-  "keywords": [
-    "github",
-    "tests",
-    "jest",
-    "api",
-    "sdk"
-  ],
-  "author": "Martin Gawlyta",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/mlvrkhn/task-js-testing/issues"
-  },
-  "homepage": "https://github.com/mlvrkhn/task-js-testing#readme",
-  "devDependencies": {
-    "@babel/core": "^7.11.1",
-    "@babel/preset-env": "^7.11.0",
-    "babel-loader": "^8.1.0",
-    "html-webpack-plugin": "^4.5.0",
-    "jest": "^26.3.0",
-    "jest-babel": "^1.0.1",
-    "node-fetch": "^2.6.1",
-    "source-map-loader": "^1.1.2",
-    "webpack": "^4.44.2",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
-  },
-  "dependencies": {}
+    "name": "github-sdk-api",
+    "version": "1.0.0",
+    "description": "API that let's you fetch data from GitHub and perform opeations on it.",
+    "main": "api.js",
+    "scripts": {
+        "test": "jest --watchAll",
+        "start": "webpack-dev-server --open --watch",
+        "build": "webpack --mode production"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mlvrkhn/task-js-testing.git"
+    },
+    "keywords": [
+        "github",
+        "tests",
+        "jest",
+        "api",
+        "sdk"
+    ],
+    "author": "Martin Gawlyta",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/mlvrkhn/task-js-testing/issues"
+    },
+    "homepage": "https://github.com/mlvrkhn/task-js-testing#readme",
+    "devDependencies": {
+        "@babel/core": "^7.11.1",
+        "@babel/preset-env": "^7.11.0",
+        "babel-loader": "^8.1.0",
+        "html-webpack-plugin": "^4.5.0",
+        "jest": "^26.3.0",
+        "jest-babel": "^1.0.1",
+        "node-fetch": "^2.6.1",
+        "source-map-loader": "^1.1.2",
+        "webpack": "^4.44.2",
+        "webpack-cli": "^3.3.12",
+        "webpack-dev-server": "^3.11.0"
+    },
+    "dependencies": {}
 }
