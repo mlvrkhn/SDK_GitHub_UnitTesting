@@ -1,65 +1,37 @@
-# JavaScript: Testowanie
+# Software Development Kit for Github with Unit Testing
 
-Twoim zadaniem jest stworzenie czegoś na pograniczu Klienta czy [SDK](https://pl.wikipedia.org/wiki/Software_development_kit) dla [GitHub API](https://docs.github.com/en/rest) czyli bibioteki, która utałwi korzystywanie z dostępych rozwiązń.
+## Project description
 
-Chodzi o to, aby zamiast budować rozbudowane instrukcje typu:
-```
-const secret = 'secret-token';
-const url = `https://api.github.com/repos/devmentor-pl/task-js-basics/collaborators/bogolubow`;
-const promise = fetch(url, {
-    method: 'PUT',
-    credentials: 'same-origin',
-    redirect: 'follow',
-    headers: {
-        Accept: 'application/vnd.github.v3+json',
-        Authorization: `token ${secret}`,
-    },
-    body: JSON.stringify({
-        permission: 'pull'
-    }),
-});
-```
+Create Software Development Kit that will allow you to automate workflow by allowing to remotely manage your GitHub account settings, repositories and other available actions defined in GitHub REST API.  
 
-Móc wykorzystać klasę, którą zbudujesz. Może się ona nazwyać np. `GitHubSDK`.
-Jeśli odpowiednio zaimplementujesz metodę o nazwie `.sendInvitation()` to wystarczy wtedy wywołać:
-```
-const gh = new GitHubSDK('devmentor-pl', 'secret-token');
-gh.sendInvitation('task-js-basics', 'bogolubow');
-```
+Scroll down to see the code samples.
 
-Wew. tej funkcji oczywiście będzie kod, który wstawiłem na samym początku jednak wtedy będziesz mógł go wykorzystać w wielu swoich projektach w wygodniejszy sposób. To pozwoli Ci zaoszczędzić sporo czasu i maksymalizować zyski.
+## Project Difficilties
+- Create a JavaScript Class with SDK above functionality, 
+- use Personal Token and Authorization to fetch and handle data from GitHub REST API,
+- usage of Red-Green-Refactor technique to create tests before coding the project,
+- create, send and handle asynchronous fetch requests and errors,
+- SDK updates recent list of your repositories completely auomatically
 
-GitHub API posiada bardzo duże możliwości zarządzania kontem. To co robisz przy pomocy interfejsu, możesz również zrobić przy pomocy API, np.:
+## My Solution
 
-- pobrać informacje o użytkowniku ([dokumentacja](https://docs.github.com/en/rest/reference/users#get-a-user))
-- pobrać informacje o repozytoriach ([dokumentajca](https://docs.github.com/en/rest/reference/repos#list-public-repositories))
-- porbrać informacje o commitach w repozytorium ([dokumentacja](https://docs.github.com/en/rest/reference/repos#list-commits))
-- pobrać informacje o komentarzach do commitów ([dokumentacja](https://docs.github.com/en/rest/reference/repos#list-commit-comments))
-- poberać informacje o błędach w repozytorium ([dokumentacja](https://docs.github.com/en/rest/reference/issues#list-repository-issues))
-- pobrać informacje o aktywności ([dokumentacja](https://docs.github.com/en/rest/reference/activity#list-repository-events))
+After providing your username and token you are able to effortlessly:
 
-Możesz również zarządzać swoim kontem jeśli [uwierzytelnisz](https://docs.github.com/en/rest/guides/basics-of-authentication) swoje zapytanie. Najprościej jest to zrobić [generując odpowiedni token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token). Następnie w nagłówku przesyłając jego zawartość tak jak w przykładzie na samym początku.
-
-Jak widzisz jest mnóstwo możliwości. Ty powinieneś wybrać minimalną funkcjonalność dla swojej biblioteki. Taką, która umożliwi Ci jś wykorzystać do tworzenia własnego portofio. Portfolio, które samo się aktualizuje czerpiąc dane o projektach ze swojego konta GitHub.
-
-Biblioteka powinna być sworzona zgodnie z metodyką TDD czyli red-green-refaktor. Napierw piszesz testy, które musisz sam skonfigurować. Potem dopiero piszesz implementację. Niech Twoje testy określają jaką funkcjonalność będzie posiadać Twoja biblioteka.
-
-Pamiętaj, że najprościej jest napisać rozwiązanie pod konkretny przypadek, a dopiero potem kombinować z parametrami funkcji. Zgodnie z krokami: 
-
-- RED: napisanie testu
-- GREEN: implementacja konkretnego przypadku
-- REFACTOR: uogólnienie rozwiązania
-
-Zadaniem dodatkowym (na teraz lub potem) będzie stworzenie przynajmniej szkieletu "samoaktualizującego się" portfolio, które na pewno zostanie docenione przez Twojego potencjalnego pracodawcę.
+- create new repositories and delete old ones,
+- toggle repositories privacy settings,
+- get public repositories based on given username,
+- validate provided data,
+- securely communicate with external API via JSON-files
 
 
+## Notable features
 
+- entire project covered with Unit Tests made in accordance with the Test Driven Development (TDD) methodology,
+- secure and authenticated connection to API using personal-access-token,
+- build a class GitHubSDK.js connected to API via fetch function and async code
 
+## Code samples  
+<img src="./public/testing-tests.png" alt="drawing" width="350px"/> 
+<img src="./public/testing-class.png" alt="drawing" width="350px"/>
 
-
-
-
-
-
-
-
+##### Build with help of Mateusz Bogolubow, [Devmentor](www.devmentor.pl).
