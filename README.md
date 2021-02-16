@@ -31,7 +31,7 @@ After providing your username and token you are able to effortlessly:
 - build a class GitHubSDK.js connected to API via fetch function and async code
 
 ## Code samples  
-<img src="./public/testing-tests.png" alt="drawing" width="50px"/> 
-<img src="./public/testing-class.png" alt="drawing" width="500px"/>
+<img src="./public/testing-tests.png" alt="testing-tests" width="500px"/> 
+<img src="./public/testing-class.png" alt="testing-class" width="500px"/>
 
 ##### Build with help of Mateusz Bogolubow, [Devmentor](www.devmentor.pl).
