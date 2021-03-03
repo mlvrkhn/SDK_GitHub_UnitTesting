@@ -34,4 +34,4 @@ After providing your username and token you are able to effortlessly:
 <img src="./public/testing-tests.png" alt="testing-tests" width="500px"/> 
 <img src="./public/testing-class.png" alt="testing-class" width="500px"/>
 
-##### Build with help of Mateusz Bogolubow, [Devmentor](www.devmentor.pl).
+##### Build with supervision of Mateusz Bogolubow, Senior Developer, [Devmentor](www.devmentor.pl).
